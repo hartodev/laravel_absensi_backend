@@ -14,4 +14,6 @@ class CompanyController extends Controller
         $company = Company::find(1);
         return response(['company' => $company], 200);
     }
+
+    // update
 }
