@@ -15,5 +15,5 @@ class CompanyController extends Controller
         return response(['company' => $company], 200);
     }
 
-    // update
+    // update news
 }
