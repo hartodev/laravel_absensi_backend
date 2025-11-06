@@ -1,3 +1,3 @@
 <div class="simple-footer mt-5">
-    Copyright &copy; Milositech 2014
+    Copyright &copy; Absen Pintar 2014
 </div>

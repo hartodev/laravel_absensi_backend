@@ -1,3 +1,3 @@
   <div class="simple-footer">
-      Copyright &copy; Milositech 2024
+      Copyright &copy; Absen Pintar 2024
   </div>
