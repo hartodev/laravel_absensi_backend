@@ -6,6 +6,7 @@
 // use App\Http\Controllers\Backend\UserController;
 use App\Http\Controllers\Backend\Auth\LoginController;
 use App\Http\Controllers\Backend\Admin\AdminDashboardController;
+use App\Http\Controllers\Backend\Admin\UserController;
 use App\Http\Controllers\Backend\Company\CompanyDashboardController;
 use App\Http\Controllers\Backend\User\UserDashboardController;
 use Illuminate\Support\Facades\Route;
@@ -58,6 +59,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 // Dashboard per role
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::resource('/admin/users', UserController::class);
 });
 
 Route::middleware(['auth', 'role:company'])->group(function () {

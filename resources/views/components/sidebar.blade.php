@@ -34,7 +34,7 @@
     @if(Auth::user()->role == 'admin')
         <li class="menu-header">Management</li>
         <li>
-            <a href="#" class="nav-link">
+            <a href="{{ route('users.index') }}" class="nav-link">
                 <i class="fas fa-users"></i><span>Users</span>
             </a>
         </li>
