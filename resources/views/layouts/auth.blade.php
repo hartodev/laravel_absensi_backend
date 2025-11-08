@@ -41,23 +41,40 @@
 
 <body>
     <div id="app">
-        <section class="section">
-            <div class="container mt-5">
-                <div class="row">
-                    <div
-                        class="{{ Request::is('auth-register') ? 'col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2' : 'col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4' }}">
-                        <!-- Footer -->
-                        @include('components.auth-header')
+    
+        <section class="section vh-100">
+    <div class="container-fluid h-100">
+        <div class="row h-100">
 
-                        <!-- Content -->
-                        @yield('main')
-
-                        <!-- Footer -->
-                        @include('components.auth-footer')
-                    </div>
+            {{-- Bagian kiri: logo atau ilustrasi --}}
+            <div class="col-md-6 d-none d-md-flex align-items-center justify-content-center bg-primary text-white">
+                <div class="text-center">
+                    <img src="{{ asset('backend/asset/img/absen-fill.svg') }}" alt="logo" width="200" class="mb-4">
+                    <h3>Selamat Datang di <br><strong>Absen Pintar</strong></h3>
+                    <p class="mt-3">Solusi absensi cerdas untuk perusahaan modern.</p>
                 </div>
             </div>
-        </section>
+
+            {{-- Bagian kanan: form login --}}
+            <div class="col-md-6 d-flex align-items-center justify-content-center">
+                <div class="w-75">
+
+                    {{-- Header --}}
+                    <!-- @include('components.auth-header') -->
+
+                    {{-- Form --}}
+                    @yield('main')
+
+                    {{-- Footer --}}
+                    <!-- @include('components.auth-footer') -->
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
     </div>
 
     <!-- General JS Scripts -->
