@@ -33,31 +33,36 @@
     {{-- ADMIN MENU --}}
     @if(Auth::user()->role == 'admin')
         <li class="menu-header">Management</li>
-        <li>
-            <a href="{{ route('users.index') }}" class="nav-link">
-                <i class="fas fa-users"></i><span>Users</span>
-            </a>
-        </li>
-        <li>
-            <a href="{{ route('companies.index') }}" class="nav-link">
-                <i class="fas fa-building"></i><span>Companies</span>
-            </a>
-        </li>
-        <li>
-            <a href="#" class="nav-link">
-                <i class="fas fa-clock"></i><span>Attendances</span>
-            </a>
-        </li>
-        <li>
-            <a href="#" class="nav-link">
-                <i class="fas fa-user-check"></i><span>Permissions</span>
-            </a>
-        </li>
-        <li>
-            <a href="#" class="nav-link">
-                <i class="fas fa-file-invoice-dollar"></i><span>Payroll Templates</span>
-            </a>
-        </li>
+        
+    <li class="{{ request()->is('admin/users*') ? 'active' : '' }}">
+        <a href="{{ route('users.index') }}" class="nav-link">
+            <i class="fas fa-users"></i><span>Users</span>
+        </a>
+    </li>
+
+    <li class="{{ request()->is('admin/companies*') ? 'active' : '' }}">
+        <a href="{{ route('companies.index') }}" class="nav-link">
+            <i class="fas fa-building"></i><span>Companies</span>
+        </a>
+    </li>
+
+    <li class="{{ request()->is('admin/attendances*') ? 'active' : '' }}">
+        <a href="#" class="nav-link">
+            <i class="fas fa-clock"></i><span>Attendances</span>
+        </a>
+    </li>
+
+    <li class="{{ request()->is('admin/permissions*') ? 'active' : '' }}">
+        <a href="#" class="nav-link">
+            <i class="fas fa-user-check"></i><span>Permissions</span>
+        </a>
+    </li>
+
+    <li class="{{ request()->is('admin/payroll-templates*') ? 'active' : '' }}">
+        <a href="#" class="nav-link">
+            <i class="fas fa-file-invoice-dollar"></i><span>Payroll Templates</span>
+        </a>
+    </li>
     @endif
 
 

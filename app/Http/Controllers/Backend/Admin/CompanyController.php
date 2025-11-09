@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Company;
+use Illuminate\Validation\Rule;
 
 class CompanyController extends Controller
 {
@@ -32,13 +33,13 @@ class CompanyController extends Controller
             'time_in'    => 'required|date_format:H:i',
             'time_out'   => 'required|date_format:H:i|after:time_in',
             'timezone'   => 'required|string|max:50',
-            'type'       => 'required|in:company,school,pesantren',
+           'type' => ['required', Rule::in(Company::TYPES)],
             'image_url'  => 'nullable|url',
         ]);
 
         Company::create($request->all());
 
-        return redirect()->route('admin.companies.index')->with('success', 'Company berhasil ditambahkan.');
+        return redirect()->route('companies.index')->with('success', 'Company berhasil ditambahkan.');
     }
 
     public function edit($id)
@@ -61,13 +62,13 @@ class CompanyController extends Controller
             'time_in'    => 'required|date_format:H:i',
             'time_out'   => 'required|date_format:H:i|after:time_in',
             'timezone'   => 'required|string|max:50',
-            'type'       => 'required|in:company,school,pesantren',
+           'type' => ['required', Rule::in(Company::TYPES)],
             'image_url'  => 'nullable|url',
         ]);
 
         $company->update($request->all());
 
-        return redirect()->route('admin.companies.index')->with('success', 'Company berhasil diperbarui.');
+        return redirect()->route('companies.index')->with('success', 'Company berhasil diperbarui.');
     }
 
     public function destroy($id)
@@ -75,6 +76,6 @@ class CompanyController extends Controller
         $company = Company::findOrFail($id);
         $company->delete();
 
-        return redirect()->route('admin.companies.index')->with('success', 'Company berhasil dihapus.');
+        return redirect()->route('companies.index')->with('success', 'Company berhasil dihapus.');
     }
 }
