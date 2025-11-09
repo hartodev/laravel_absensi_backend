@@ -39,7 +39,7 @@
             </a>
         </li>
         <li>
-            <a href="#" class="nav-link">
+            <a href="{{ route('companies.index') }}" class="nav-link">
                 <i class="fas fa-building"></i><span>Companies</span>
             </a>
         </li>
