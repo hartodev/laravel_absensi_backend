@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('companies', function (Blueprint $table) {
             $table->string('timezone')->default('Asia/Jakarta');
             $table->string('type')->default('company'); // bisa: company, school, pesantren
+            $table->string('image_url')->nullable();
         });
     }
 
@@ -22,7 +23,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('companies', function (Blueprint $table) {
             //
         });
     }
