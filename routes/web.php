@@ -3,6 +3,7 @@
 use App\Http\Controllers\Backend\Auth\LoginController;
 use App\Http\Controllers\Backend\Admin\AdminDashboardController;
 use App\Http\Controllers\Backend\Admin\CompanyController;
+use App\Http\Controllers\Backend\Admin\AttendanceController;
 use App\Http\Controllers\Backend\Admin\UserController;
 use App\Http\Controllers\Backend\Company\CompanyDashboardController;
 use App\Http\Controllers\Backend\User\UserDashboardController;
@@ -58,6 +59,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::resource('/admin/users', UserController::class);
     Route::resource('/admin/companies', CompanyController::class);
+    Route::resource('/admin/attendances', AttendanceController::class);
 });
 
 Route::middleware(['auth', 'role:company'])->group(function () {

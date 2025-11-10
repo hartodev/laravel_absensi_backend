@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->enum('status', ['on_time', 'late', 'absent', 'permission', 'overtime', 'guest'])->default('on_time');
+        Schema::table('attendances', function (Blueprint $table) {
+                        $table->enum('status', ['on_time', 'late', 'absent', 'permission', 'overtime', 'guest'])->default('on_time');
             $table->integer('overtime_minutes')->default(0);
             $table->boolean('approved_overtime')->default(false);
         });
@@ -23,7 +23,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('attendances', function (Blueprint $table) {
             //
         });
     }
