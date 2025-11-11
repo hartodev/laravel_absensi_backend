@@ -38,7 +38,8 @@ class AttendanceController extends Controller
             'latlon_out' => 'nullable|string|max:100',
             'status' => 'required|in:on_time,late,absent,permission,overtime,guest',
             'overtime_minutes' => 'nullable|integer|min:0',
-            'approved_overtime' => 'boolean',
+            'approved_overtime' => 'nullable|boolean',
+
         ]);
 
         Attendance::create([
@@ -73,6 +74,12 @@ class AttendanceController extends Controller
     {
         $attendance = Attendance::findOrFail($id);
 
+           // Normalisasi format waktu
+    $request->merge([
+        'time_in'  => $request->time_in ? str_replace('.', ':', $request->time_in) : null,
+        'time_out' => $request->time_out ? str_replace('.', ':', $request->time_out) : null,
+    ]);
+
         $request->validate([
             'user_id' => 'required|exists:users,id',
             'date' => 'required|date',
@@ -82,7 +89,8 @@ class AttendanceController extends Controller
             'latlon_out' => 'nullable|string|max:100',
             'status' => 'required|in:on_time,late,absent,permission,overtime,guest',
             'overtime_minutes' => 'nullable|integer|min:0',
-            'approved_overtime' => 'boolean',
+           'approved_overtime' => 'nullable|boolean',
+
         ]);
 
         $attendance->update([
