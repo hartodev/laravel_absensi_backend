@@ -73,7 +73,7 @@ public function store(Request $request)
     {
         $permission = Permission::findOrFail($id);
         $users = User::where('role', 'user')->get();
-        return view('pages.admin.permissions.edit', compact('permission', 'users'));
+        return view('pages.admin.permission.edit', compact('permission', 'users'));
     }
 
     /**
