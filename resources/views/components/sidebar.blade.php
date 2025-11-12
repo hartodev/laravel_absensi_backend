@@ -53,7 +53,7 @@
     </li>
 
     <li class="{{ request()->is('admin/permissions*') ? 'active' : '' }}">
-        <a href="#" class="nav-link">
+        <a href="{{ route('permissions.index') }}" class="nav-link">
             <i class="fas fa-user-check"></i><span>Permissions</span>
         </a>
     </li>
