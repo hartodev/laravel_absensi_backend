@@ -50,7 +50,7 @@ class PayroolController extends Controller
             'status' => $request->status,
         ]);
 
-        return redirect()->route('payrolls.index')->with('success', 'Data payroll berhasil ditambahkan.');
+        return redirect()->route('payrools.index')->with('success', 'Data payroll berhasil ditambahkan.');
     }
 
     public function edit($id)
@@ -91,13 +91,13 @@ class PayroolController extends Controller
             'status' => $request->status,
         ]);
 
-        return redirect()->route('payrolls.index')->with('success', 'Data payroll berhasil diperbarui.');
+        return redirect()->route('payrools.index')->with('success', 'Data payroll berhasil diperbarui.');
     }
 
     public function destroy($id)
     {
         $payroll = Payrool::findOrFail($id);
         $payroll->delete();
-        return redirect()->route('payrolls.index')->with('success', 'Data payroll berhasil dihapus.');
+        return redirect()->route('payrools.index')->with('success', 'Data payroll berhasil dihapus.');
     }
 }

@@ -84,13 +84,13 @@
                                             </td>
                                             <td>
                                                 <div class="d-flex justify-content-center">
-                                                    <a href='{{ route('payrools.edit', $a->id) }}'
+                                                    <a href='{{ route('payrools.edit', $p->id) }}'
                                                         class="btn btn-sm btn-info btn-icon">
                                                         <i class="fas fa-edit"></i>
                                                         Edit
                                                     </a>
 
-                                                    <form action="{{ route('payrools.destroy', $a->id) }}" method="POST"
+                                                    <form action="{{ route('payrools.destroy', $p->id) }}" method="POST"
                                                         class="ml-2">
                                                         <input type="hidden" name="_method" value="DELETE" />
                                                         <input type="hidden" name="_token" value="{{ csrf_token() }}" />
