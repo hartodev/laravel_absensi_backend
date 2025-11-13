@@ -59,7 +59,7 @@
     </li>
 
     <li class="{{ request()->is('admin/payroll-templates*') ? 'active' : '' }}">
-        <a href="#" class="nav-link">
+        <a href="{{ route('payrools.index') }}" class="nav-link">
             <i class="fas fa-file-invoice-dollar"></i><span>Payroll Templates</span>
         </a>
     </li>
