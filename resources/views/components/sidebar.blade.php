@@ -76,7 +76,7 @@
                 </li>
 
                 <li class="{{ request()->is('admin/shifts*') ? 'active' : '' }}">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('shifts.index') }}" class="nav-link">
                         <i class="fas fa-calendar-alt"></i><span>Shift Management</span>
                     </a>
                 </li>
