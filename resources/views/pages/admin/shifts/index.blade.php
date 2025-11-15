@@ -35,65 +35,81 @@
 
             <div class="row mt-4">
                 <div class="col-12">
-
                     <div class="card">
                         <div class="card-header">
-                            <h4>Daftar Shift</h4>
+                            <h4>All Posts</h4>
                         </div>
+                        <div class="card-body">
 
-                        <div class="card-body table-responsive">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Company</th>
-                                        <th>Shift</th>
-                                        <th>Start</th>
-                                        <th>End</th>
-                                        <th>Grace Period</th>
-                                        <th>Default</th>
-                                        <th width="20%">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($shifts as $s)
-                                    <tr>
-                                        <td>{{ $s->company->name }}</td>
-                                        <td>{{ $s->name }}</td>
-                                        <td>{{ $s->start_time }}</td>
-                                        <td>{{ $s->end_time }}</td>
-                                        <td>{{ $s->grace_period_minutes }} menit</td>
-                                        <td>
-                                            @if($s->is_default)
-                                            <span class="badge badge-success">Default</span>
-                                            @else
-                                            <span class="badge badge-secondary">-</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <a href='{{ route('shifts.edit', $s->id) }}'
-                                                    class="btn btn-sm btn-info btn-icon">
-                                                    <i class="fas fa-edit"></i>
-                                                    Edit
-                                                </a>
+                            <div class="float-right">
+                                <form method="GET" action="{{ route('shifts.index') }}">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Search" name="name">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
 
-                                                <form action="{{ route('shifts.destroy', $s->id) }}" method="POST"
-                                                    class="ml-2">
-                                                    <input type="hidden" name="_method" value="DELETE" />
-                                                    <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-                                                    <button class="btn btn-sm btn-danger btn-icon confirm-delete">
-                                                        <i class="fas fa-times"></i> Delete
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
+                            <div class="clearfix mb-3"></div>
 
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table-striped table">
+                                    <thead>
+                                        <tr>
+                                            <th>Company</th>
+                                            <th>Shift</th>
+                                            <th>Start</th>
+                                            <th>End</th>
+                                            <th>Grace Period</th>
+                                            <th>Default</th>
+                                            <th width="20%">Action</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        @foreach($shifts as $s)
+                                        <tr>
+                                            <td>{{ $s->company->name }}</td>
+                                            <td>{{ $s->name }}</td>
+                                            <td>{{ $s->start_time }}</td>
+                                            <td>{{ $s->end_time }}</td>
+                                            <td>{{ $s->grace_period_minutes }} menit</td>
+                                            <td>
+                                                @if($s->is_default)
+                                                <span class="badge badge-success">Default</span>
+                                                @else
+                                                <span class="badge badge-secondary">-</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <div class="d-flex justify-content-center">
+                                                    <a href='{{ route('shifts.edit', $s->id) }}'
+                                                        class="btn btn-sm btn-info btn-icon">
+                                                        <i class="fas fa-edit"></i>
+                                                        Edit
+                                                    </a>
+
+                                                    <form action="{{ route('shifts.destroy', $s->id) }}" method="POST"
+                                                        class="ml-2">
+                                                        <input type="hidden" name="_method" value="DELETE" />
+                                                        <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                                                        <button class="btn btn-sm btn-danger btn-icon confirm-delete">
+                                                            <i class="fas fa-times"></i> Delete
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+
+
+                                </table>
+                            </div>
                         </div>
-
                     </div>
                 </div>
             </div>
