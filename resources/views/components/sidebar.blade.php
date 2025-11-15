@@ -82,7 +82,7 @@
                 </li>
 
                 <li class="{{ request()->is('admin/schedules*') ? 'active' : '' }}">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('schedules.index') }}" class="nav-link">
                         <i class="fas fa-tasks"></i><span>Schedules</span>
                     </a>
                 </li>
