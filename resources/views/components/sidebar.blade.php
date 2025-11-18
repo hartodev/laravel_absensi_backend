@@ -88,7 +88,7 @@
                 </li>
 
                 <li class="{{ request()->is('admin/prayers*') ? 'active' : '' }}">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('prayers.index') }}" class="nav-link">
                         <i class="fas fa-mosque"></i><span>Prayers (Adzan)</span>
                     </a>
                 </li>

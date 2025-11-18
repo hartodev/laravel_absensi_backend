@@ -7,6 +7,7 @@ use App\Http\Controllers\Backend\Admin\AttendanceController;
 use App\Http\Controllers\Backend\Admin\PayroolController;
 use App\Http\Controllers\Backend\Admin\LoanController;
 use App\Http\Controllers\Backend\Admin\PermissionController;
+use App\Http\Controllers\Backend\Admin\PrayerController;
 use App\Http\Controllers\Backend\Admin\ShiftController;
 use App\Http\Controllers\Backend\Admin\ScheduleController;
 use App\Http\Controllers\Backend\Admin\UserController;
@@ -32,6 +33,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('/admin/loans', LoanController::class);
     Route::resource('/admin/shifts', ShiftController::class);
     Route::resource('/admin/schedules', ScheduleController::class);
+    Route::resource('/admin/prayers', PrayerController::class);
     
 });
 
