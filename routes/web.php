@@ -34,6 +34,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('/admin/shifts', ShiftController::class);
     Route::resource('/admin/schedules', ScheduleController::class);
     Route::resource('/admin/prayers', PrayerController::class);
+    Route::get('/admin/reports', [App\Http\Controllers\Backend\Admin\ReportController::class, 'index'])->name('admin.reports.index');
     
 });
 

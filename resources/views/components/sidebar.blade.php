@@ -94,7 +94,7 @@
                 </li>
 
                 <li class="{{ request()->is('admin/reports*') ? 'active' : '' }}">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('admin.reports.index') }}" class="nav-link">
                         <i class="fas fa-chart-line"></i><span>Reports & Analytics</span>
                     </a>
                 </li>
