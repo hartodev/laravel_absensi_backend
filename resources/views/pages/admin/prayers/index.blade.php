@@ -74,23 +74,29 @@
                             <td>{{ $p->city }}</td>
                             <td>{{ $p->date }}</td>
                             <td>{{ $p->fajr }}</td>
-                            <td>{{ $p->dhuhr }}</td>
-                            <td>{{ $p->asr }}</td>
+                            <td>{{ $p->dzuhur }}</td>
+                            <td>{{ $p->ashar }}</td>
                             <td>{{ $p->maghrib }}</td>
-                            <td>{{ $p->isha }}</td>
-                            <td>
-                                <a href="{{ route('prayers.edit', $p->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                            <td>{{ $p->isya }}</td>
+                             <td>
+                                                    <div class="d-flex justify-content-center">
+                                                        <a href='{{ route('prayers.edit', $p->id) }}'
+                                                            class="btn btn-sm btn-info btn-icon">
+                                                            <i class="fas fa-edit"></i>
+                                                            Edit
+                                                        </a>
 
-                                <form action="{{ route('prayers.destroy', $p->id) }}"
-                                      method="POST" class="d-inline">
-                                    @csrf @method('DELETE')
-                                    <button class="btn btn-danger btn-sm"
-                                            onclick="return confirm('Delete this schedule?')">
-                                        Delete
-                                    </button>
-                                </form>
-
-                            </td>
+                                                        <form action="{{ route('prayers.destroy', $p->id) }}"
+                                                            method="POST" class="ml-2">
+                                                            <input type="hidden" name="_method" value="DELETE" />
+                                                            <input type="hidden" name="_token"
+                                                                value="{{ csrf_token() }}" />
+                                                            <button class="btn btn-sm btn-danger btn-icon confirm-delete">
+                                                                <i class="fas fa-times"></i> Delete
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </td>
                         </tr>
                         @endforeach
                     </tbody>

@@ -25,10 +25,10 @@ class PrayerController extends Controller
             'city' => 'required|string',
             'date' => 'required|date',
             'fajr' => 'nullable|date_format:H:i',
-            'dhuhr' => 'nullable|date_format:H:i',
-            'asr' => 'nullable|date_format:H:i',
+            'dzuhur' => 'nullable|date_format:H:i',
+            'ashar' => 'nullable|date_format:H:i',
             'maghrib' => 'nullable|date_format:H:i',
-            'isha' => 'nullable|date_format:H:i',
+            'isya' => 'nullable|date_format:H:i',
             'source' => 'nullable|string',
         ]);
 
@@ -51,10 +51,10 @@ class PrayerController extends Controller
             'city' => 'required|string',
             'date' => 'required|date',
             'fajr' => 'nullable|date_format:H:i',
-            'dhuhr' => 'nullable|date_format:H:i',
-            'asr' => 'nullable|date_format:H:i',
+            'dzuhur' => 'nullable|date_format:H:i',
+            'ashar' => 'nullable|date_format:H:i',
             'maghrib' => 'nullable|date_format:H:i',
-            'isha' => 'nullable|date_format:H:i',
+            'isya' => 'nullable|date_format:H:i',
             'source' => 'nullable|string',
         ]);
 
