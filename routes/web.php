@@ -14,6 +14,7 @@ use App\Http\Controllers\Backend\Admin\UserController;
 Use App\Http\Controllers\Backend\Company\CompanyAttendanceController;
 use App\Http\Controllers\Backend\Company\CompanyDashboardController;
 use App\Http\Controllers\Backend\Company\CompanyEmployeeController;
+use App\Http\Controllers\Backend\Company\CompanyPermissionController;
 use App\Http\Controllers\Backend\User\UserDashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -51,6 +52,16 @@ Route::middleware(['auth', 'role:company'])->group(function () {
         ->name('company.attendances.show');
 
          Route::resource('/company/employees', CompanyEmployeeController::class);
+
+         // Permission Approval
+    Route::get('/company/permissions', [CompanyPermissionController::class, 'index'])
+        ->name('company.permissions.index');
+
+    Route::post('/company/permissions/{id}/approve', [CompanyPermissionController::class, 'approve'])
+        ->name('company.permissions.approve');
+
+    Route::post('/company/permissions/{id}/reject', [CompanyPermissionController::class, 'reject'])
+        ->name('company.permissions.reject');
 
 
 });

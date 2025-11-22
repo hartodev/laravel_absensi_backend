@@ -120,7 +120,7 @@
                 </li>
 
                 <li class="{{ request()->is('company/permissions*') ? 'active' : '' }}">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('company.permissions.index') }}" class="nav-link">
                         <i class="fas fa-user-check"></i><span>Permissions</span>
                     </a>
                 </li>
