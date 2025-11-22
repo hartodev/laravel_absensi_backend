@@ -125,8 +125,8 @@
                     </a>
                 </li>
 
-                <li class="{{ request()->is('company/shifts*') ? 'active' : '' }}">
-                    <a href="#" class="nav-link">
+                <li class="{{ request()->is('company/shiftser*') ? 'active' : '' }}">
+                    <a href="{{ route('index') }}" class="nav-link">
                         <i class="fas fa-calendar-alt"></i><span>Shift Schedule</span>
                     </a>
                 </li>

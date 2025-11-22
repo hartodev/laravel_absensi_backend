@@ -15,6 +15,7 @@ Use App\Http\Controllers\Backend\Company\CompanyAttendanceController;
 use App\Http\Controllers\Backend\Company\CompanyDashboardController;
 use App\Http\Controllers\Backend\Company\CompanyEmployeeController;
 use App\Http\Controllers\Backend\Company\CompanyPermissionController;
+use App\Http\Controllers\Backend\Company\CompanyShiftController;
 use App\Http\Controllers\Backend\User\UserDashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -62,6 +63,8 @@ Route::middleware(['auth', 'role:company'])->group(function () {
 
     Route::post('/company/permissions/{id}/reject', [CompanyPermissionController::class, 'reject'])
         ->name('company.permissions.reject');
+
+         Route::resource('/company/shiftser/', CompanyShiftController::class);
 
 
 });
