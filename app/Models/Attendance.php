@@ -15,4 +15,11 @@ class Attendance extends Model
         return $this->belongsTo(User::class);
     }
 
+    
+    protected $casts = [
+        'approved_overtime' => 'boolean',
+        'date' => 'date',
+    ];
+
+
 }

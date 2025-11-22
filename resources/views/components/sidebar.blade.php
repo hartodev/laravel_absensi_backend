@@ -108,7 +108,7 @@
                 <li class="menu-header">Company Management</li>
 
                 <li class="{{ request()->is('company/attendances*') ? 'active' : '' }}">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('company.attendances.index') }}" class="nav-link">
                         <i class="fas fa-clock"></i><span>Attendances</span>
                     </a>
                 </li>
@@ -152,7 +152,7 @@
                 <li class="menu-header">My Menu</li>
 
                 <li class="{{ request()->is('user/attendances*') ? 'active' : '' }}">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('attendances.index') }}" class="nav-link">
                         <i class="fas fa-clock"></i><span>Absensi Saya</span>
                     </a>
                 </li>

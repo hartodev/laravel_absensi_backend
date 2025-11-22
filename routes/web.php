@@ -11,6 +11,7 @@ use App\Http\Controllers\Backend\Admin\PrayerController;
 use App\Http\Controllers\Backend\Admin\ShiftController;
 use App\Http\Controllers\Backend\Admin\ScheduleController;
 use App\Http\Controllers\Backend\Admin\UserController;
+Use App\Http\Controllers\Backend\Company\CompanyAttendanceController;
 use App\Http\Controllers\Backend\Company\CompanyDashboardController;
 use App\Http\Controllers\Backend\User\UserDashboardController;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +41,14 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 Route::middleware(['auth', 'role:company'])->group(function () {
     Route::get('/company/dashboard', [CompanyDashboardController::class, 'index'])->name('company.dashboard');
+
+    // Attendance Management
+    Route::get('/company/attendances', [CompanyAttendanceController::class, 'index'])
+        ->name('company.attendances.index');
+
+    Route::get('/company/attendances/{id}', [CompanyAttendanceController::class, 'show'])
+        ->name('company.attendances.show');
+
 });
 
 Route::middleware(['auth', 'role:user'])->group(function () {
