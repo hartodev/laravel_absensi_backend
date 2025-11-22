@@ -45,4 +45,10 @@ class User extends Authenticatable
     return $this->hasMany(Attendance::class);
 }
 
+
+public function company()
+{
+    return $this->belongsTo(Company::class);
+}
+
 }

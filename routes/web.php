@@ -13,6 +13,7 @@ use App\Http\Controllers\Backend\Admin\ScheduleController;
 use App\Http\Controllers\Backend\Admin\UserController;
 Use App\Http\Controllers\Backend\Company\CompanyAttendanceController;
 use App\Http\Controllers\Backend\Company\CompanyDashboardController;
+use App\Http\Controllers\Backend\Company\CompanyEmployeeController;
 use App\Http\Controllers\Backend\User\UserDashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -48,6 +49,9 @@ Route::middleware(['auth', 'role:company'])->group(function () {
 
     Route::get('/company/attendances/{id}', [CompanyAttendanceController::class, 'show'])
         ->name('company.attendances.show');
+
+         Route::resource('/company/employees', CompanyEmployeeController::class);
+
 
 });
 

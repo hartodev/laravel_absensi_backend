@@ -114,7 +114,7 @@
                 </li>
 
                 <li class="{{ request()->is('company/employees*') ? 'active' : '' }}">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('employees.index') }}" class="nav-link">
                         <i class="fas fa-users"></i><span>Employees</span>
                     </a>
                 </li>
