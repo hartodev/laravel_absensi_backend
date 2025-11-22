@@ -60,7 +60,7 @@ class CompanyEmployeeController extends Controller
             ->where('role', 'user')
             ->firstOrFail();
 
-        return view('company.employees.edit', compact('employee'));
+        return view('pages.companies.employees.edit', compact('employee'));
     }
 
     public function update(Request $request, $id)
