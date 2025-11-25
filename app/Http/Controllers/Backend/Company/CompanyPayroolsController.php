@@ -34,7 +34,7 @@ class CompanyPayroolsController extends Controller
         $companyId = Auth::user()->company_id;
         $users = User::where('company_id', $companyId)->where('role', 'user')->get();
 
-        return view('backend.company.payrolls.create', compact('users'));
+        return view('pages.companies.payrolls.create', compact('users'));
     }
 
     public function store(Request $request)
