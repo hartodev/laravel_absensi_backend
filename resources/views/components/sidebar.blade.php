@@ -125,14 +125,14 @@
                     </a>
                 </li>
 
-                <li class="{{ request()->is('/company/shifts*') ? 'active' : '' }}">
+                <li class="{{ request()->is('company/shifts*') ? 'active' : '' }}">
                     <a href="{{ route('company.shifts.index') }}" class="nav-link">
                         <i class="fas fa-calendar-alt"></i><span>Shift Schedule</span>
                     </a>
                 </li>
 
-                <li class="{{ request()->is('company/payrools*') ? 'active' : '' }}">
-                    <a href="#" class="nav-link">
+                <li class="{{ request()->is('company/payrolls*') ? 'active' : '' }}">
+                    <a href="{{ route('company.payrolls.index') }}" class="nav-link">
                         <i class="fas fa-money-check-alt"></i><span>Payroll</span>
                     </a>
                 </li>
