@@ -64,7 +64,7 @@ Route::middleware(['auth', 'role:company'])->group(function () {
     Route::post('/company/permissions/{id}/reject', [CompanyPermissionController::class, 'reject'])
         ->name('company.permissions.reject');
 
-         Route::resource('/company/shiftser/', CompanyShiftController::class);
+         Route::resource('/company/shifts', CompanyShiftController::class)->names('company.shifts');
 
 
 });

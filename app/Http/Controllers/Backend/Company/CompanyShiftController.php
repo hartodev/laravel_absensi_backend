@@ -26,6 +26,7 @@ class CompanyShiftController extends Controller
 
     public function store(Request $request)
     {
+
         $request->validate([
             'name'    => 'required|string',
             'start_time' => 'required',
@@ -43,14 +44,16 @@ class CompanyShiftController extends Controller
             'is_default' => $request->is_default ? 1 : 0,
         ]);
 
-        return redirect()->route('index')->with('success', 'Shift created successfully.');
+        return redirect()->route('company.shifts.index')->with('success', 'Shift created successfully.');
     }
+
+
 
     public function edit($id)
     {
         $shift = Shift::where('company_id', Auth::user()->company_id)->findOrFail($id);
 
-        return view('backend.company.shifts.edit', compact('shift'));
+        return view('pages.companies.shiftser.edit', compact('shift'));
     }
 
     public function update(Request $request, $id)
@@ -73,7 +76,7 @@ class CompanyShiftController extends Controller
             'is_default' => $request->is_default ? 1 : 0,
         ]);
 
-        return redirect()->route('index')->with('success', 'Shift updated successfully.');
+        return redirect()->route('company.shifts.index')->with('success', 'Shift updated successfully.');
     }
 
     public function destroy($id)
@@ -82,6 +85,6 @@ class CompanyShiftController extends Controller
 
         $shift->delete();
 
-        return redirect()->route('index')->with('success', 'Shift deleted.');
+        return redirect()->route('company.shifts.index')->with('success', 'Shift deleted.');
     }
 }

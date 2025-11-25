@@ -13,7 +13,7 @@
         <div class="section-header">
             <h1>Manajement Shifts</h1>
             <div class="section-header-button">
-                <a href="{{ route('create') }}" class="btn btn-primary">Add New</a>
+                <a href="{{ route('company.shifts.create') }}" class="btn btn-primary">Add New</a>
             </div>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
@@ -42,7 +42,7 @@
                         <div class="card-body">
 
                             <div class="float-right">
-                                <form method="GET" action="{{ route('index') }}">
+                                <form method="GET" action="{{ route('company.shifts.index') }}">
                                     <div class="input-group">
                                         <input type="text" class="form-control" placeholder="Search" name="name">
                                         <div class="input-group-append">
@@ -81,13 +81,13 @@
                                             </td>
                                                 <td>
                                                     <div class="d-flex justify-content-center">
-                                                        <a href='{{ route('edit', $s->id) }}'
+                                                        <a href='{{ route('company.shifts.edit', $s->id) }}'
                                                             class="btn btn-sm btn-info btn-icon">
                                                             <i class="fas fa-edit"></i>
                                                             Edit
                                                         </a>
 
-                                                        <form action="{{ route('destroy', $s->id) }}"
+                                                        <form action="{{ route('company.shifts.destroy', $s->id) }}"
                                                             method="POST" class="ml-2">
                                                             <input type="hidden" name="_method" value="DELETE" />
                                                             <input type="hidden" name="_token"
