@@ -86,45 +86,56 @@ class CompanyPayroolsController extends Controller
         return view('pages.companies.payrolls.edit', compact('payroll', 'users'));
     }
 
-    public function update(Request $request, $id)
-    {
-        $payroll = Payrool::findOrFail($id);
+public function update(Request $request, $id)
+{
+    $payroll = Payrool::findOrFail($id);
 
-        if ($payroll->status == 'paid') {
-            return back()->with('error', 'Paid payroll cannot be edited.');
-        }
-
-        $request->validate([
-            'user_id'       => 'required|exists:users,id',
-            'period_start'  => 'required|date',
-            'period_end'    => 'required|date|after_or_equal:period_start',
-            'base_salary'   => 'required|numeric|min:0',
-            'allowance'     => 'required|numeric|min:0',
-            'deductions'    => 'required|numeric|min:0',
-            'overtime_pay'  => 'required|numeric|min:0',
-            'bonus'         => 'required|numeric|min:0',
-        ]);
-
-        $net = $request->base_salary + 
-               $request->allowance + 
-               $request->overtime_pay + 
-               $request->bonus - 
-               $request->deductions;
-
-        $payroll->update([
-            'user_id'      => $request->user_id,
-            'period_start' => $request->period_start,
-            'period_end'   => $request->period_end,
-            'base_salary'  => $request->base_salary,
-            'allowance'    => $request->allowance,
-            'deductions'   => $request->deductions,
-            'overtime_pay' => $request->overtime_pay,
-            'bonus'        => $request->bonus,
-            'net_pay'      => $net,
-        ]);
-
-        return redirect()->route('company.payrolls.index')->with('success', 'Payroll updated successfully!');
+    // Jika sudah paid, tidak boleh di-edit
+    if ($payroll->status == 'paid') {
+        return back()->with('error', 'Paid payroll cannot be edited.');
     }
+
+    // Validasi
+    $request->validate([
+        'user_id'       => 'required|exists:users,id',
+        'period_start'  => 'required|date',
+        'period_end'    => 'required|date|after_or_equal:period_start',
+        'base_salary'   => 'required|numeric|min:0',
+        'allowance'     => 'required|numeric|min:0',
+        'deductions'    => 'required|numeric|min:0',
+        'overtime_pay'  => 'required|numeric|min:0',
+        'bonus'         => 'required|numeric|min:0',
+
+        // ditambahkan untuk edit status
+        'status'        => 'required|in:draft,approved,paid',
+    ]);
+
+    // Hitung total gaji bersih
+    $net = 
+        $request->base_salary +
+        $request->allowance +
+        $request->overtime_pay +
+        $request->bonus -
+        $request->deductions;
+
+    // Update payroll
+    $payroll->update([
+        'user_id'      => $request->user_id,
+        'period_start' => $request->period_start,
+        'period_end'   => $request->period_end,
+        'base_salary'  => $request->base_salary,
+        'allowance'    => $request->allowance,
+        'deductions'   => $request->deductions,
+        'overtime_pay' => $request->overtime_pay,
+        'bonus'        => $request->bonus,
+        'net_pay'      => $net,
+        'status'       => $request->status, // <— update status disini
+    ]);
+
+    return redirect()
+        ->route('company.payrolls.index')
+        ->with('success', 'Payroll updated successfully!');
+}
 
     public function destroy($id)
     {

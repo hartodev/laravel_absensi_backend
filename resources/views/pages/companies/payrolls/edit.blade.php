@@ -30,18 +30,17 @@
             <h2 class="section-title">Edit Payrolls</h2>
 
 
-               <div class="card">
-        <div class="card-body">
-            <form action="{{ route('company.payrolls.update', $payroll->id) }}" method="POST">
-                @csrf
-                @method('PUT')
+            <div class="card">
+                <div class="card-body">
+                    <form action="{{ route('company.payrolls.update', $payroll->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
 
-                   <div class="form-group">
+                        <div class="form-group">
                             <label>Employee</label>
                             <select name="user_id" class="form-control" required>
                                 @foreach($users as $u)
-                                <option value="{{ $u->id }}" 
-                                    {{ $u->id == $payroll->user_id ? 'selected' : '' }}>
+                                <option value="{{ $u->id }}" {{ $u->id == $payroll->user_id ? 'selected' : '' }}>
                                     {{ $u->name }}
                                 </option>
                                 @endforeach
@@ -51,57 +50,67 @@
                         <div class="form-group">
                             <label>Period Start</label>
                             <input type="date" name="period_start" class="form-control"
-                                   value="{{ $payroll->period_start }}" required>
+                                value="{{ $payroll->period_start }}" required>
                         </div>
 
                         <div class="form-group">
                             <label>Period End</label>
-                            <input type="date" name="period_end" class="form-control"
-                                   value="{{ $payroll->period_end }}" required>
+                            <input type="date" name="period_end" class="form-control" value="{{ $payroll->period_end }}"
+                                required>
                         </div>
 
                         <div class="form-group">
                             <label>Base Salary</label>
                             <input type="number" name="base_salary" class="form-control" min="0"
-                                   value="{{ $payroll->base_salary }}" required>
+                                value="{{ $payroll->base_salary }}" required>
                         </div>
 
                         <div class="form-group">
                             <label>Allowance</label>
                             <input type="number" name="allowance" class="form-control" min="0"
-                                   value="{{ $payroll->allowance }}" required>
+                                value="{{ $payroll->allowance }}" required>
                         </div>
 
                         <div class="form-group">
                             <label>Deductions</label>
                             <input type="number" name="deductions" class="form-control" min="0"
-                                   value="{{ $payroll->deductions }}" required>
+                                value="{{ $payroll->deductions }}" required>
                         </div>
 
                         <div class="form-group">
                             <label>Overtime Pay</label>
                             <input type="number" name="overtime_pay" class="form-control" min="0"
-                                   value="{{ $payroll->overtime_pay }}" required>
+                                value="{{ $payroll->overtime_pay }}" required>
                         </div>
 
                         <div class="form-group">
                             <label>Bonus</label>
-                            <input type="number" name="bonus" class="form-control" min="0"
-                                   value="{{ $payroll->bonus }}" required>
+                            <input type="number" name="bonus" class="form-control" min="0" value="{{ $payroll->bonus }}"
+                                required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select name="status" class="form-control">
+                                <option value="draft" {{ $payroll->status == 'draft' ? 'selected' : '' }}>Draft</option>
+                                <option value="approved" {{ $payroll->status == 'approved' ? 'selected' : '' }}>Approved
+                                </option>
+                                <option value="paid" {{ $payroll->status == 'paid' ? 'selected' : '' }}>Paid</option>
+                            </select>
                         </div>
 
                         <div class="form-group">
                             <label>Net Pay (auto calculated)</label>
                             <input type="text" value="Rp {{ number_format($payroll->net_pay,0,',','.') }}"
-                                   class="form-control" disabled>
+                                class="form-control" disabled>
                         </div>
 
 
-                <button class="btn btn-primary">Update</button>
-                <a href="{{ route('company.payrolls.index') }}" class="btn btn-secondary">Kembali</a>
-            </form>
-        </div>
-    </div>
+                        <button class="btn btn-primary">Update</button>
+                        <a href="{{ route('company.payrolls.index') }}" class="btn btn-secondary">Kembali</a>
+                    </form>
+                </div>
+            </div>
 
         </div>
     </section>
