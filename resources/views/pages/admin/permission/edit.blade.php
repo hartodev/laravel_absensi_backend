@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Attendance')
+@section('title', 'Edit Permission')
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('backend/asset/library/bootstrap-daterangepicker/daterangepicker.css') }}">
@@ -15,7 +15,7 @@
             <h1>Edit Attendance</h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-                <div class="breadcrumb-item"><a href="{{ route('attendances.index') }}">Attendances</a></div>
+                <div class="breadcrumb-item"><a href="{{ route('permissions.index') }}">Permissions</a></div>
                 <div class="breadcrumb-item">Edit</div>
             </div>
         </div>
