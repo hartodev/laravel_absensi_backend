@@ -83,7 +83,7 @@ class CompanyPayroolsController extends Controller
         $companyId = Auth::user()->company_id;
         $users = User::where('company_id', $companyId)->get();
 
-        return view('backend.company.payrolls.edit', compact('payroll', 'users'));
+        return view('pages.companies.payrolls.edit', compact('payroll', 'users'));
     }
 
     public function update(Request $request, $id)
