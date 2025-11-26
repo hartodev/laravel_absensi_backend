@@ -17,6 +17,7 @@ use App\Http\Controllers\Backend\Company\CompanyEmployeeController;
 use App\Http\Controllers\Backend\Company\CompanyPermissionController;
 use App\Http\Controllers\Backend\Company\CompanyShiftController;
 use App\Http\Controllers\Backend\Company\CompanyPayroolsController;
+use App\Http\Controllers\Backend\Company\CompanyLoansController;
 use App\Http\Controllers\Backend\User\UserDashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -71,8 +72,11 @@ Route::middleware(['auth', 'role:company'])->group(function () {
     Route::resource('/company/payrolls', CompanyPayroolsController::class)->names('company.payrolls');
 
     // Action: Approve / Pay
-    Route::post('company/payrolls/{id}/status', [CompanyPayroolsController::class, 'changeStatus'])
+    Route::post('/company/payrolls/{id}/status', [CompanyPayroolsController::class, 'changeStatus'])
         ->name('company.payrolls.changeStatus');
+
+        // loans
+    Route::resource('/company/loans', CompanyLoansController::class)->names('company.loans');
 
 
 });

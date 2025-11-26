@@ -138,7 +138,7 @@
                 </li>
 
                 <li class="{{ request()->is('company/loans*') ? 'active' : '' }}">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('company.loans.index') }}" class="nav-link">
                         <i class="fas fa-hand-holding-usd"></i><span>Loans</span>
                     </a>
                 </li>
