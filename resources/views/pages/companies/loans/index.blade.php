@@ -3,7 +3,6 @@
 @section('title', 'Manajement Loans')
 
 @push('style')
-<!-- CSS Libraries -->
 <link rel="stylesheet" href="{{ asset('backend/asset/library/selectric/public/selectric.css') }}">
 @endpush
 
@@ -21,24 +20,28 @@
                 <div class="breadcrumb-item">All Loans</div>
             </div>
         </div>
+
         <div class="section-body">
+
             <div class="row">
                 <div class="col-12">
                     @include('layouts.alert')
                 </div>
             </div>
+
             <h2 class="section-title">Loans</h2>
             <p class="section-lead">
                 You can manage all Loans, such as editing, deleting and more.
             </p>
 
-
             <div class="row mt-4">
                 <div class="col-12">
                     <div class="card">
+
                         <div class="card-header">
-                            <h4>All Posts</h4>
+                            <h4>All Loans</h4>
                         </div>
+
                         <div class="card-body">
 
                             <div class="float-right">
@@ -55,47 +58,79 @@
                             <div class="clearfix mb-3"></div>
 
                             <div class="table-responsive">
+
                                 <table class="table-striped table">
-                                     <thead>
-                        <tr>
-                            <th>User</th>
-                            <th>Amount</th>
-                            <th>Installments</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
+                                    <thead>
+                                        <tr>
+                                            <th>User</th>
+                                            <th>Total Pinjaman</th>
+                                            <th>Sisa Kasbon</th>
+                                            <th>Installments</th>
+                                            <th>Status</th>
+                                            <th>Change Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
 
                                     <tbody>
                                         @foreach($loans as $loan)
                                         <tr>
-                                              <td>{{ $loan->user->name }}</td>
-                            <td>Rp {{ number_format($loan->amount, 0) }}</td>
-                            <td>{{ $loan->installments }}</td>
-                            <td>
-                                <span class="badge badge-{{ 
-                                    $loan->status == 'approved' ? 'success' :
-                                    ($loan->status == 'rejected' ? 'danger' :
-                                    ($loan->status == 'paid' ? 'info' : 'warning')) }}">
-                                    {{ ucfirst($loan->status) }}
-                                </span>
-                            </td>
+
+                                            <td>{{ $loan->user->name }}</td>
+
+                                            <td>Rp {{ number_format($loan->amount, 0) }}</td>
+
+                                            {{-- NEW: BALANCE --}}
+                                            <td>
+                                                <strong>Rp {{ number_format($loan->balance, 0) }}</strong>
+                                            </td>
+
+                                            <td>{{ $loan->installments }}</td>
+
+                                            <td>
+                                                <span class="badge badge-{{
+                                                    $loan->status == 'approved' ? 'success' :
+                                                    ($loan->status == 'rejected' ? 'danger' :
+                                                    ($loan->status == 'paid' ? 'info' : 'warning'))
+                                                }}">
+                                                    {{ ucfirst($loan->status) }}
+                                                </span>
+                                            </td>
+
+                                            {{-- CHANGE STATUS --}}
+                                            <td>
+                                                <form action="{{ route('company.loans.changeStatus', $loan->id) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    <select name="status" class="form-control form-control-sm"
+                                                            onchange="this.form.submit()">
+                                                        <option value="">-- Ubah --</option>
+                                                        <option value="pending">Pending</option>
+                                                        <option value="approved">Approved</option>
+                                                        <option value="rejected">Rejected</option>
+                                                        <option value="paid">Paid</option>
+                                                    </select>
+                                                </form>
+                                            </td>
+
                                             <td>
                                                 <div class="d-flex justify-content-center">
-                                                    <a href='{{ route('company.loans.edit', $loan->id) }}'
-                                                        class="btn btn-sm btn-info btn-icon">
+
+                                                    <a href="{{ route('company.loans.edit', $loan->id) }}"
+                                                       class="btn btn-sm btn-info btn-icon">
                                                         <i class="fas fa-edit"></i>
                                                         Edit
                                                     </a>
 
-                                                    <form action="{{ route('company.loans.destroy', $loan->id) }}" method="POST"
-                                                        class="ml-2">
-                                                        <input type="hidden" name="_method" value="DELETE" />
-                                                        <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                                                    <form action="{{ route('company.loans.destroy', $loan->id) }}"
+                                                          method="POST" class="ml-2">
+                                                        @method('DELETE')
+                                                        @csrf
                                                         <button class="btn btn-sm btn-danger btn-icon confirm-delete">
                                                             <i class="fas fa-times"></i> Delete
                                                         </button>
                                                     </form>
+
                                                 </div>
                                             </td>
 
@@ -104,25 +139,23 @@
                                     </tbody>
                                 </table>
 
-
-                                </table>
                             </div>
+
                             <div class="float-right">
                                 {{ $loans->withQueryString()->links() }}
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
     </section>
 </div>
 @endsection
 
 @push('scripts')
-<!-- JS Libraies -->
 <script src="{{ asset('backend/asset/library/selectric/public/jquery.selectric.min.js') }}"></script>
-
-<!-- Page Specific JS File -->
 <script src="{{ asset('backend/asset/js/page/features-posts.js') }}"></script>
 @endpush

@@ -64,36 +64,91 @@ class CompanyLoansController extends Controller
             ->where('role', 'user')
             ->get();
 
-        return view('backend.company.loans.edit', compact('loan', 'employees'));
+        return view('pages.companies.loans.edit', compact('loan', 'employees'));
     }
 
     // UPDATE
-    public function update(Request $request, $id)
-    {
-        $loan = Loan::findOrFail($id);
+//     public function update(Request $request, $id)
+//     {  $loan = Loan::findOrFail($id);
 
-        if ($loan->status == 'paid') {
-            return back()->with('error', 'Paid loan cannot be edited.');
-        }
+//     if ($loan->status == 'paid') {
+//         return back()->with('error', 'Paid loan cannot be edited.');
+//     }
 
-        $request->validate([
-            'user_id'      => 'required|exists:users,id',
-            'amount'       => 'required|numeric|min:0',
-            'installments' => 'required|numeric|min:1',
-            'status'       => 'required|in:pending,approved,rejected,paid',
-        ]);
+//     $request->validate([
+//         'user_id'      => 'required|exists:users,id',
+//         'amount'       => 'required|numeric|min:0',
+//         'installments' => 'required|numeric|min:1',
+//         'status'       => 'required|in:pending,approved,rejected,paid',
+//     ]);
 
-        $loan->update([
-            'user_id'      => $request->user_id,
-            'amount'       => $request->amount,
-            'installments' => $request->installments,
-            'balance'      => $request->amount,
-            'status'       => $request->status,
-        ]);
+//     // --- HITUNG BALANCE BARU ---
+//     // balance lama
+//     $oldBalance = $loan->balance;
+//     $oldAmount  = $loan->amount;
+//     $newAmount  = $request->amount;
 
-        return redirect()->route('company.loans.index')
-            ->with('success', 'Loan updated successfully!');
+//     // Koreksi balance berdasarkan perubahan amount
+//     // Jika amount naik → balance naik
+//     // Jika amount turun → balance turun (max 0)
+//     $newBalance = $oldBalance - ($oldAmount - $newAmount);
+//     if ($newBalance < 0) {
+//         $newBalance = 0;
+//     }
+
+//     // Update
+//     $loan->update([
+//         'user_id'      => $request->user_id,
+//         'amount'       => $newAmount,
+//         'installments' => $request->installments,
+//         'balance'      => $newBalance,
+//         'status'       => $request->status,
+//     ]);
+
+//     return redirect()->route('company.loans.index')
+//         ->with('success', 'Loan updated successfully!');
+// }
+
+// UPDATE
+public function update(Request $request, $id)
+{
+    $loan = Loan::findOrFail($id);
+
+    if ($loan->status == 'paid') {
+        return back()->with('error', 'Paid loan cannot be edited.');
     }
+
+    $request->validate([
+        'user_id'      => 'required|exists:users,id',
+        'amount'       => 'required|numeric|min:0',
+        'installments' => 'required|numeric|min:1',
+        'status'       => 'required|in:pending,approved,rejected,paid',
+        'payment'      => 'nullable|numeric|min:0',
+    ]);
+
+    $oldBalance = $loan->balance;
+    $payment = $request->payment ?? 0;
+
+    // kurangi balance jika ada pembayaran
+    $newBalance = $oldBalance - $payment;
+
+    if ($newBalance < 0) {
+        $newBalance = 0;
+    }
+
+    // update
+    $loan->update([
+        'user_id'      => $request->user_id,
+        'amount'       => $request->amount,
+        'installments' => $request->installments,
+        'balance'      => $newBalance,
+        'status'       => $request->status,
+    ]);
+
+    return redirect()->route('company.loans.index')
+        ->with('success', 'Loan updated successfully!');
+}
+
 
     // DELETE
     public function destroy($id)

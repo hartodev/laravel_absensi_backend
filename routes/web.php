@@ -79,6 +79,10 @@ Route::middleware(['auth', 'role:company'])->group(function () {
     Route::resource('/company/loans', CompanyLoansController::class)->names('company.loans');
 
 
+    // Change status
+    Route::post('/company/loans/{id}/status', [CompanyLoansController::class, 'changeStatus'])
+        ->name('company.loans.changeStatus');
+
 });
 
 Route::middleware(['auth', 'role:user'])->group(function () {
