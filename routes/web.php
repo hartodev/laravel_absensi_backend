@@ -45,7 +45,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 });
 
 Route::middleware(['auth', 'role:company'])->group(function () {
-    Route::get('/company/dashboard', [CompanyDashboardController::class, 'index'])->name('company.dashboard');
+    // Route::get('/company/dashboard', [CompanyDashboardController::class, 'index'])->name('company.dashboard');
+       Route::get('/company/dashboard', [CompanyDashboardController::class, 'index'])
+        ->name('company.dashboard');
 
     // Attendance Management
     Route::get('/company/attendances', [CompanyAttendanceController::class, 'index'])
