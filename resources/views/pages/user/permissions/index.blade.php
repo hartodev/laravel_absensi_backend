@@ -77,7 +77,7 @@
                                                         style="width:50px;height:50px;object-fit:cover" class="rounded">
                                                 </a>
                                                 @else
-                                                -
+                                               <span class="badge badge-danger">No Images</span>
                                                 @endif
                                             </td>
                                             <td>
@@ -85,21 +85,25 @@
                                                     {{ $p->is_approved ? 'Disetujui' : 'Menunggu' }}
                                                 </span>
                                             </td>
-                                            <td>
-                                                @if(!$p->is_approved)
-                                                <a href="{{ route('user.permissions.edit', $p->id) }}"
-                                                    class="btn btn-sm btn-info">Edit</a>
+                                         <td>
+                                                    <div class="d-flex justify-content-center">
+                                                        <a href='{{ route('user.permissions.edit', $p->id) }}'
+                                                            class="btn btn-sm btn-info btn-icon">
+                                                            <i class="fas fa-edit"></i>
+                                                            Edit
+                                                        </a>
 
-                                                <form action="{{ route('user.permissions.destroy', $p->id) }}"
-                                                    method="POST" class="d-inline">
-                                                    @csrf @method('DELETE')
-                                                    <button class="btn btn-sm btn-danger"
-                                                        onclick="return confirm('Yakin hapus?')">Hapus</button>
-                                                </form>
-                                                @else
-                                                <span class="text-muted">No Action</span>
-                                                @endif
-                                            </td>
+                                                        <form action="{{ route('user.permissions.destroy', $p->id) }}"
+                                                            method="POST" class="ml-2">
+                                                            <input type="hidden" name="_method" value="DELETE" />
+                                                            <input type="hidden" name="_token"
+                                                                value="{{ csrf_token() }}" />
+                                                            <button class="btn btn-sm btn-danger btn-icon confirm-delete">
+                                                                <i class="fas fa-times"></i> Delete
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </td>
                                         </tr>
                                         @endforeach
                                     </tbody>
