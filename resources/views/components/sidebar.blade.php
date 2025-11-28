@@ -152,13 +152,13 @@
                 <li class="menu-header">My Menu</li>
 
                 <li class="{{ request()->is('user/attendances*') ? 'active' : '' }}">
-                    <a href="{{ route('attendances.index') }}" class="nav-link">
+                    <a href="{{ route('user.attendances.index') }}" class="nav-link">
                         <i class="fas fa-clock"></i><span>Absensi Saya</span>
                     </a>
                 </li>
 
                 <li class="{{ request()->is('user/permissions*') ? 'active' : '' }}">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('user.permissions.index') }}" class="nav-link">
                         <i class="fas fa-plane"></i><span>Izin & Dinas</span>
                     </a>
                 </li>
