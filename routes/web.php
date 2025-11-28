@@ -18,6 +18,8 @@ use App\Http\Controllers\Backend\Company\CompanyPermissionController;
 use App\Http\Controllers\Backend\Company\CompanyShiftController;
 use App\Http\Controllers\Backend\Company\CompanyPayroolsController;
 use App\Http\Controllers\Backend\Company\CompanyLoansController;
+use App\Http\Controllers\Backend\User\UserAttendanceController;
+use App\Http\Controllers\Backend\User\UserPermissionController;
 use App\Http\Controllers\Backend\User\UserDashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -89,4 +91,12 @@ Route::middleware(['auth', 'role:company'])->group(function () {
 
 Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/user/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
+
+      // Attendance User
+    Route::get('/user/attendances', [UserAttendanceController::class, 'index'])
+        ->name('user.attendances.index');
+
+        // permission User
+        Route::resource('/user/permissions', UserPermissionController::class)->names('user.permissions');
+
 });
