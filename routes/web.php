@@ -22,6 +22,7 @@ use App\Http\Controllers\Backend\User\UserAttendanceController;
 use App\Http\Controllers\Backend\User\UserPermissionController;
 use App\Http\Controllers\Backend\User\UserScheduleController;
 use App\Http\Controllers\Backend\User\UserPayrollController;
+use App\Http\Controllers\Backend\User\UserLoansController;
 use App\Http\Controllers\Backend\User\UserDashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -107,6 +108,9 @@ Route::middleware(['auth', 'role:user'])->group(function () {
         // user payrolls index
         Route::get('/user/payrolls', [UserPayrollController::class, 'index'])->name('user.payrolls.index');
         Route::get('/user/payrolls/{id}', [UserPayrollController::class, 'show'])->name('user.payrolls.show');
+
+        // user loans
+        Route::resource('/user/loans', UserLoansController::class)->names('user.loans');
 
 
 });

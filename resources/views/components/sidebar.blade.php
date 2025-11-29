@@ -176,7 +176,7 @@
                 </li>
 
                 <li class="{{ request()->is('user/loans*') ? 'active' : '' }}">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('user.loans.index') }}" class="nav-link">
                         <i class="fas fa-hand-holding-usd"></i><span>Kasbon Saya</span>
                     </a>
                 </li>
