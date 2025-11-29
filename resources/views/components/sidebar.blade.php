@@ -170,7 +170,7 @@
                 </li>
 
                 <li class="{{ request()->is('user/payrolls*') ? 'active' : '' }}">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('user.payrolls.index') }}" class="nav-link">
                         <i class="fas fa-file-invoice-dollar"></i><span>Slip Gaji</span>
                     </a>
                 </li>
