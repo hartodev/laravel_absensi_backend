@@ -20,6 +20,7 @@ use App\Http\Controllers\Backend\Company\CompanyPayroolsController;
 use App\Http\Controllers\Backend\Company\CompanyLoansController;
 use App\Http\Controllers\Backend\User\UserAttendanceController;
 use App\Http\Controllers\Backend\User\UserPermissionController;
+use App\Http\Controllers\Backend\User\UserScheduleController;
 use App\Http\Controllers\Backend\User\UserDashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -98,5 +99,8 @@ Route::middleware(['auth', 'role:user'])->group(function () {
 
         // permission User
         Route::resource('/user/permissions', UserPermissionController::class)->names('user.permissions');
+
+        // user schedules
+        Route::resource('/user/schedules', UserScheduleController::class)->names('user.schedules');
 
 });

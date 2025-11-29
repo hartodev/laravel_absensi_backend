@@ -164,7 +164,7 @@
                 </li>
 
                 <li class="{{ request()->is('user/schedules*') ? 'active' : '' }}">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('user.schedules.index') }}" class="nav-link">
                         <i class="fas fa-calendar-alt"></i><span>Jadwal & Reminder</span>
                     </a>
                 </li>
