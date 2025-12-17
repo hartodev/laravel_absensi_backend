@@ -157,6 +157,13 @@
                     </a>
                 </li>
 
+                 <li class="{{ request()->is('user/notes*') ? 'active' : '' }}">
+                    <a href="{{ route('user.notes.index') }}" class="nav-link">
+                        <i class="fas fa-sticky-note"></i><span>Catatan Saya</span>
+                    </a>
+                </li>
+
+
                 <li class="{{ request()->is('user/permissions*') ? 'active' : '' }}">
                     <a href="{{ route('user.permissions.index') }}" class="nav-link">
                         <i class="fas fa-plane"></i><span>Izin & Dinas</span>
