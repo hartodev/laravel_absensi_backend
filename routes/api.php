@@ -66,35 +66,35 @@ Route::prefix('user')
     ->middleware(['auth:sanctum', 'role:user'])
     ->group(function () {
 
-    // profile
-    Route::get('/profile', [ProfileController::class, 'show']);
-    Route::post('/profile', [ProfileController::class, 'update']);
+    // // profile
+    // Route::get('/profile', [ProfileController::class, 'show']);
+    // Route::post('/profile', [ProfileController::class, 'update']);
 
-    // attendance
-    Route::get('/attendances', [AttendanceController::class, 'index']);
-    Route::post('/attendances/check-in', [AttendanceController::class, 'checkIn']);
-    Route::post('/attendances/check-out', [AttendanceController::class, 'checkOut']);
-    Route::get('/attendances/is-checkin', [AttendanceController::class, 'isCheckedIn']);
+    // // attendance
+    // Route::get('/attendances', [AttendanceController::class, 'index']);
+    // Route::post('/attendances/check-in', [AttendanceController::class, 'checkIn']);
+    // Route::post('/attendances/check-out', [AttendanceController::class, 'checkOut']);
+    // Route::get('/attendances/is-checkin', [AttendanceController::class, 'isCheckedIn']);
 
-    // permissions (izin / cuti)
-    Route::get('/permissions', [PermissionController::class, 'index']);
-    Route::post('/permissions', [PermissionController::class, 'store']);
-    Route::get('/permissions/{id}', [PermissionController::class, 'show']);
+    // // permissions (izin / cuti)
+    // Route::get('/permissions', [PermissionController::class, 'index']);
+    // Route::post('/permissions', [PermissionController::class, 'store']);
+    // Route::get('/permissions/{id}', [PermissionController::class, 'show']);
 
-    // notes
-    Route::apiResource('/notes', NoteController::class);
+    // // notes
+    // Route::apiResource('/notes', NoteController::class);
 
-    // schedules
-    Route::apiResource('/schedules', ScheduleController::class);
+    // // schedules
+    // Route::apiResource('/schedules', ScheduleController::class);
 
-    // payrolls (read only)
-    Route::get('/payrolls', [PayrollController::class, 'index']);
-    Route::get('/payrolls/{id}', [PayrollController::class, 'show']);
+    // // payrolls (read only)
+    // Route::get('/payrolls', [PayrollController::class, 'index']);
+    // Route::get('/payrolls/{id}', [PayrollController::class, 'show']);
 
-    // loans (kasbon)
-    Route::get('/loans', [LoanController::class, 'index']);
-    Route::post('/loans', [LoanController::class, 'store']);
-    Route::get('/loans/{id}', [LoanController::class, 'show']);
+    // // loans (kasbon)
+    // Route::get('/loans', [LoanController::class, 'index']);
+    // Route::post('/loans', [LoanController::class, 'store']);
+    // Route::get('/loans/{id}', [LoanController::class, 'show']);
 });
 
 
@@ -105,35 +105,35 @@ Route::prefix('company')
     ->middleware(['auth:sanctum', 'role:company'])
     ->group(function () {
 
-    // dashboard
-    Route::get('/dashboard', [DashboardController::class, 'index']);
+    // // dashboard
+    // Route::get('/dashboard', [DashboardController::class, 'index']);
 
-    // company profile
-    Route::get('/profile', [CompanyProfileController::class, 'show']);
-    Route::post('/profile', [CompanyProfileController::class, 'update']);
+    // // company profile
+    // Route::get('/profile', [CompanyProfileController::class, 'show']);
+    // Route::post('/profile', [CompanyProfileController::class, 'update']);
 
-    // employees
-    Route::apiResource('/employees', EmployeeController::class);
+    // // employees
+    // Route::apiResource('/employees', EmployeeController::class);
 
-    // attendances
-    Route::get('/attendances', [CompanyAttendanceController::class, 'index']);
-    Route::get('/attendances/{id}', [CompanyAttendanceController::class, 'show']);
+    // // attendances
+    // Route::get('/attendances', [CompanyAttendanceController::class, 'index']);
+    // Route::get('/attendances/{id}', [CompanyAttendanceController::class, 'show']);
 
-    // permissions approval
-    Route::get('/permissions', [CompanyPermissionController::class, 'index']);
-    Route::post('/permissions/{id}/approve', [CompanyPermissionController::class, 'approve']);
-    Route::post('/permissions/{id}/reject', [CompanyPermissionController::class, 'reject']);
+    // // permissions approval
+    // Route::get('/permissions', [CompanyPermissionController::class, 'index']);
+    // Route::post('/permissions/{id}/approve', [CompanyPermissionController::class, 'approve']);
+    // Route::post('/permissions/{id}/reject', [CompanyPermissionController::class, 'reject']);
 
-    // shifts
-    Route::apiResource('/shifts', ShiftController::class);
+    // // shifts
+    // Route::apiResource('/shifts', ShiftController::class);
 
-    // payrolls
-    Route::apiResource('/payrolls', CompanyPayrollController::class);
-    Route::post('/payrolls/{id}/status', [CompanyPayrollController::class, 'changeStatus']);
+    // // payrolls
+    // Route::apiResource('/payrolls', CompanyPayrollController::class);
+    // Route::post('/payrolls/{id}/status', [CompanyPayrollController::class, 'changeStatus']);
 
-    // loans
-    Route::apiResource('/loans', CompanyLoanController::class);
-    Route::post('/loans/{id}/status', [CompanyLoanController::class, 'changeStatus']);
+    // // loans
+    // Route::apiResource('/loans', CompanyLoanController::class);
+    // Route::post('/loans/{id}/status', [CompanyLoanController::class, 'changeStatus']);
 });
 
 
@@ -142,10 +142,10 @@ Route::prefix('company')
 
 Route::prefix('public')->group(function () {
 
-    // app info
-    Route::get('/app-info', [AppController::class, 'info']);
+    // // app info
+    // Route::get('/app-info', [AppController::class, 'info']);
 
-    // prayers
-    Route::get('/prayers', [PrayerController::class, 'today']);
-    Route::get('/prayers/{city}', [PrayerController::class, 'byCity']);
+    // // prayers
+    // Route::get('/prayers', [PrayerController::class, 'today']);
+    // Route::get('/prayers/{city}', [PrayerController::class, 'byCity']);
 });
