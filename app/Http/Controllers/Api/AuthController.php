@@ -5,33 +5,72 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\Company;
+
 use Illuminate\Support\Facades\Hash;
+
 
 class AuthController extends Controller
 {
     // login
-    public function login(Request $request)
+    // public function login(Request $request)
+    // {
+    //     $loginData = $request->validate([
+    //         'email' => 'required|email',
+    //         'password' => 'required',
+    //     ]);
+
+    //     $user = User::where('email', $loginData['email'])->first();
+
+    //     //check user exist
+    //     if (!$user) {
+    //         return response(['message' => 'Invalid credentials'], 401);
+    //     }
+
+    //     //check password
+    //     if (!Hash::check($loginData['password'], $user->password)) {
+    //         return response(['message' => 'Invalid credentials'], 401);
+    //     }
+
+    //     $token = $user->createToken('auth_token')->plainTextToken;
+
+    //     return response(['user' => $user, 'token' => $token], 200);
+    // }
+
+// revisi login kode 1 
+ public function login(Request $request)
     {
-        $loginData = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
+        $request->validate([
+            'email'    => 'required|email',
+            'password' => 'required'
         ]);
 
-        $user = User::where('email', $loginData['email'])->first();
+        // Cari user berdasarkan email
+        $user = User::where('email', $request->email)->first();
 
-        //check user exist
-        if (!$user) {
-            return response(['message' => 'Invalid credentials'], 401);
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'message' => 'Email atau password salah'
+            ], 401);
         }
 
-        //check password
-        if (!Hash::check($loginData['password'], $user->password)) {
-            return response(['message' => 'Invalid credentials'], 401);
+        // Buat token sanctum
+        $tokenName = $user->role . '-token';
+        $token = $user->createToken($tokenName)->plainTextToken;
+
+        // Ambil company jika ada
+        $company = null;
+        if ($user->company_id) {
+            $company = Company::find($user->company_id);
         }
 
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response(['user' => $user, 'token' => $token], 200);
+        return response()->json([
+            'message' => 'Login berhasil',
+            'token'   => $token,
+            'role'    => $user->role,
+            'user'    => $user,
+            'company' => $company
+        ]);
     }
 
     //logout
@@ -66,6 +105,24 @@ class AuthController extends Controller
         ], 200);
     }
 
+
+    // me
+    public function me(Request $request)
+    {
+        $user = $request->user();
+        $company = null;
+
+        if ($user->company_id) {
+            $company = Company::find($user->company_id);
+        }
+
+        return response()->json([
+            'user'    => $user,
+            'role'    => $user->role,
+            'company' => $company
+        ]);
+    }
+
     //update fcm_token
     public function updateFcmToken(Request $request)
     {
@@ -80,5 +137,29 @@ class AuthController extends Controller
         return response([
             'message' => 'FCM token updated',
         ], 200);
+    }
+
+     public function changePassword(Request $request)
+    {
+        $request->validate([
+            'old_password' => 'required',
+            'new_password' => 'required|min:6'
+        ]);
+
+        $user = $request->user();
+
+        if (!Hash::check($request->old_password, $user->password)) {
+            return response()->json([
+                'message' => 'Password lama salah'
+            ], 400);
+        }
+
+        $user->update([
+            'password' => Hash::make($request->new_password)
+        ]);
+
+        return response()->json([
+            'message' => 'Password berhasil diubah'
+        ]);
     }
 }

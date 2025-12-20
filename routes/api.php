@@ -5,36 +5,147 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+// //login
+// Route::post('/login', [AuthController::class, 'login']);
+
+// //logout
+// Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+
+// //company
+// Route::get('/companies', [App\Http\Controllers\Api\CompanyController::class, 'show'])->middleware('auth:sanctum');
+
+// //checkin
+// Route::post('/checkin', [App\Http\Controllers\Api\AttendanceController::class, 'checkin'])->middleware('auth:sanctum');
+
+// //checkout
+// Route::post('/checkout', [App\Http\Controllers\Api\AttendanceController::class, 'checkout'])->middleware('auth:sanctum');
+
+// //is checkin
+// Route::get('/is-checkin', [App\Http\Controllers\Api\AttendanceController::class, 'isCheckedin'])->middleware('auth:sanctum');
+
+// //update profile
+// Route::post('/updateface', [App\Http\Controllers\Api\AuthController::class, 'updateProfile'])->middleware('auth:sanctum');
+
+// //create permission
+// Route::post('/api-permissions', [App\Http\Controllers\Api\PermissionController::class, 'store'])->middleware('auth:sanctum');
+
+// //notes
+// Route::post('/api-notes', [App\Http\Controllers\Api\NoteController::class,'store'])->middleware('auth:sanctum');
+
+// //update fcm token
+// Route::post('/update-fcm-token', [App\Http\Controllers\Api\AuthController::class, 'updateFcmToken'])->middleware('auth:sanctum');
+
+
+// ROUTE NEWS #################################################################################
+
+// AUTH API (ALL ROLES)
+
+Route::prefix('auth')->group(function () {
+
+    // login user / company / admin
+    Route::post('/login', [AuthController::class, 'login']);
+
+    // route protected
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/logout', [AuthController::class, 'logout']);
+        Route::get('/me', [AuthController::class, 'me']);
+        Route::post('/update-fcm-token', [AuthController::class, 'updateFcmToken']);
+        Route::post('/change-password', [AuthController::class, 'changePassword']);
+    });
+
 });
 
-//login
-Route::post('/login', [AuthController::class, 'login']);
+//  USER API
 
-//logout
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
-//company
-Route::get('/companies', [App\Http\Controllers\Api\CompanyController::class, 'show'])->middleware('auth:sanctum');
+Route::prefix('user')
+    ->middleware(['auth:sanctum', 'role:user'])
+    ->group(function () {
 
-//checkin
-Route::post('/checkin', [App\Http\Controllers\Api\AttendanceController::class, 'checkin'])->middleware('auth:sanctum');
+    // profile
+    Route::get('/profile', [ProfileController::class, 'show']);
+    Route::post('/profile', [ProfileController::class, 'update']);
 
-//checkout
-Route::post('/checkout', [App\Http\Controllers\Api\AttendanceController::class, 'checkout'])->middleware('auth:sanctum');
+    // attendance
+    Route::get('/attendances', [AttendanceController::class, 'index']);
+    Route::post('/attendances/check-in', [AttendanceController::class, 'checkIn']);
+    Route::post('/attendances/check-out', [AttendanceController::class, 'checkOut']);
+    Route::get('/attendances/is-checkin', [AttendanceController::class, 'isCheckedIn']);
 
-//is checkin
-Route::get('/is-checkin', [App\Http\Controllers\Api\AttendanceController::class, 'isCheckedin'])->middleware('auth:sanctum');
+    // permissions (izin / cuti)
+    Route::get('/permissions', [PermissionController::class, 'index']);
+    Route::post('/permissions', [PermissionController::class, 'store']);
+    Route::get('/permissions/{id}', [PermissionController::class, 'show']);
 
-//update profile
-Route::post('/updateface', [App\Http\Controllers\Api\AuthController::class, 'updateProfile'])->middleware('auth:sanctum');
+    // notes
+    Route::apiResource('/notes', NoteController::class);
 
-//create permission
-Route::post('/api-permissions', [App\Http\Controllers\Api\PermissionController::class, 'store'])->middleware('auth:sanctum');
+    // schedules
+    Route::apiResource('/schedules', ScheduleController::class);
 
-//notes
-Route::post('/api-notes', [App\Http\Controllers\Api\NoteController::class,'store'])->middleware('auth:sanctum');
+    // payrolls (read only)
+    Route::get('/payrolls', [PayrollController::class, 'index']);
+    Route::get('/payrolls/{id}', [PayrollController::class, 'show']);
 
-//update fcm token
-Route::post('/update-fcm-token', [App\Http\Controllers\Api\AuthController::class, 'updateFcmToken'])->middleware('auth:sanctum');
+    // loans (kasbon)
+    Route::get('/loans', [LoanController::class, 'index']);
+    Route::post('/loans', [LoanController::class, 'store']);
+    Route::get('/loans/{id}', [LoanController::class, 'show']);
+});
+
+
+// COMPANY API
+
+
+Route::prefix('company')
+    ->middleware(['auth:sanctum', 'role:company'])
+    ->group(function () {
+
+    // dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index']);
+
+    // company profile
+    Route::get('/profile', [CompanyProfileController::class, 'show']);
+    Route::post('/profile', [CompanyProfileController::class, 'update']);
+
+    // employees
+    Route::apiResource('/employees', EmployeeController::class);
+
+    // attendances
+    Route::get('/attendances', [CompanyAttendanceController::class, 'index']);
+    Route::get('/attendances/{id}', [CompanyAttendanceController::class, 'show']);
+
+    // permissions approval
+    Route::get('/permissions', [CompanyPermissionController::class, 'index']);
+    Route::post('/permissions/{id}/approve', [CompanyPermissionController::class, 'approve']);
+    Route::post('/permissions/{id}/reject', [CompanyPermissionController::class, 'reject']);
+
+    // shifts
+    Route::apiResource('/shifts', ShiftController::class);
+
+    // payrolls
+    Route::apiResource('/payrolls', CompanyPayrollController::class);
+    Route::post('/payrolls/{id}/status', [CompanyPayrollController::class, 'changeStatus']);
+
+    // loans
+    Route::apiResource('/loans', CompanyLoanController::class);
+    Route::post('/loans/{id}/status', [CompanyLoanController::class, 'changeStatus']);
+});
+
+
+// PUBLIC API
+
+
+Route::prefix('public')->group(function () {
+
+    // app info
+    Route::get('/app-info', [AppController::class, 'info']);
+
+    // prayers
+    Route::get('/prayers', [PrayerController::class, 'today']);
+    Route::get('/prayers/{city}', [PrayerController::class, 'byCity']);
+});
