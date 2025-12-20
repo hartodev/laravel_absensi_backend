@@ -8,10 +8,11 @@ use App\Http\Controllers\Backend\Admin\PayroolController;
 use App\Http\Controllers\Backend\Admin\LoanController;
 use App\Http\Controllers\Backend\Admin\PermissionController;
 use App\Http\Controllers\Backend\Admin\PrayerController;
+use App\Http\Controllers\Backend\Admin\ReportController;
 use App\Http\Controllers\Backend\Admin\ShiftController;
 use App\Http\Controllers\Backend\Admin\ScheduleController;
 use App\Http\Controllers\Backend\Admin\UserController;
-Use App\Http\Controllers\Backend\Company\CompanyAttendanceController;
+use App\Http\Controllers\Backend\Company\CompanyAttendanceController;
 use App\Http\Controllers\Backend\Company\CompanyDashboardController;
 use App\Http\Controllers\Backend\Company\CompanyEmployeeController;
 use App\Http\Controllers\Backend\Company\CompanyPermissionController;
@@ -30,91 +31,212 @@ use Illuminate\Support\Facades\Route;
 
 
 
+// Route::get('/', [LoginController::class, 'showLoginForm'])->name('login.form');
+// Route::post('/login', [LoginController::class, 'login'])->name('login.post');
+// Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+// // Dashboard per role
+// Route::middleware(['auth', 'role:admin'])->group(function () {
+//     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+//     Route::resource('/admin/users', UserController::class);
+//     Route::resource('/admin/companies', CompanyController::class);
+//     Route::resource('/admin/attendances', AttendanceController::class);
+//     Route::resource('/admin/permissions', PermissionController::class);
+//     Route::resource('/admin/payrools', PayroolController::class);
+//     Route::resource('/admin/loans', LoanController::class);
+//     Route::resource('/admin/shifts', ShiftController::class);
+//     Route::resource('/admin/schedules', ScheduleController::class);
+//     Route::resource('/admin/prayers', PrayerController::class);
+//     Route::get('/admin/reports', [App\Http\Controllers\Backend\Admin\ReportController::class, 'index'])->name('admin.reports.index');
+
+// });
+
+// Route::middleware(['auth', 'role:company'])->group(function () {
+//     // Route::get('/company/dashboard', [CompanyDashboardController::class, 'index'])->name('company.dashboard');
+//        Route::get('/company/dashboard', [CompanyDashboardController::class, 'index'])
+//         ->name('company.dashboard');
+
+//     // Attendance Management
+//     Route::get('/company/attendances', [CompanyAttendanceController::class, 'index'])
+//         ->name('company.attendances.index');
+
+//     Route::get('/company/attendances/{id}', [CompanyAttendanceController::class, 'show'])
+//         ->name('company.attendances.show');
+
+//          Route::resource('/company/employees', CompanyEmployeeController::class);
+
+//          // Permission Approval
+//     Route::get('/company/permissions', [CompanyPermissionController::class, 'index'])
+//         ->name('company.permissions.index');
+
+//     Route::post('/company/permissions/{id}/approve', [CompanyPermissionController::class, 'approve'])
+//         ->name('company.permissions.approve');
+
+//     Route::post('/company/permissions/{id}/reject', [CompanyPermissionController::class, 'reject'])
+//         ->name('company.permissions.reject');
+
+//          Route::resource('/company/shifts', CompanyShiftController::class)->names('company.shifts');
+
+//           // Payroll Management
+//     Route::resource('/company/payrolls', CompanyPayroolsController::class)->names('company.payrolls');
+
+//     // Action: Approve / Pay
+//     Route::post('/company/payrolls/{id}/status', [CompanyPayroolsController::class, 'changeStatus'])
+//         ->name('company.payrolls.changeStatus');
+
+//         // loans
+//     Route::resource('/company/loans', CompanyLoansController::class)->names('company.loans');
+
+
+//     // Change status
+//     Route::post('/company/loans/{id}/status', [CompanyLoansController::class, 'changeStatus'])
+//         ->name('company.loans.changeStatus');
+
+// });
+
+// Route::middleware(['auth', 'role:user'])->group(function () {
+//     Route::get('/user/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
+
+//       // Attendance User
+//     Route::get('/user/attendances', [UserAttendanceController::class, 'index'])
+//         ->name('user.attendances.index');
+
+//         // permission User
+//         Route::resource('/user/permissions', UserPermissionController::class)->names('user.permissions');
+
+//         // user schedules
+//         Route::resource('/user/schedules', UserScheduleController::class)->names('user.schedules');
+
+//         // user payrolls index
+//         Route::get('/user/payrolls', [UserPayrollController::class, 'index'])->name('user.payrolls.index');
+//         Route::get('/user/payrolls/{id}', [UserPayrollController::class, 'show'])->name('user.payrolls.show');
+
+//         // user loans
+//         Route::resource('/user/loans', UserLoansController::class)->names('user.loans');
+
+//         // user notes
+//         Route::resource('/user/notes', UserNotesController::class)->names('user.notes');
+
+
+// });
+
+
+// VERSI ROUTE RAPI
+
+
+/*
+|--------------------------------------------------------------------------
+| AUTH
+|--------------------------------------------------------------------------
+*/
+
 Route::get('/', [LoginController::class, 'showLoginForm'])->name('login.form');
 Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-// Dashboard per role
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
-    Route::resource('/admin/users', UserController::class);
-    Route::resource('/admin/companies', CompanyController::class);
-    Route::resource('/admin/attendances', AttendanceController::class);
-    Route::resource('/admin/permissions', PermissionController::class);
-    Route::resource('/admin/payrools', PayroolController::class);
-    Route::resource('/admin/loans', LoanController::class);
-    Route::resource('/admin/shifts', ShiftController::class);
-    Route::resource('/admin/schedules', ScheduleController::class);
-    Route::resource('/admin/prayers', PrayerController::class);
-    Route::get('/admin/reports', [App\Http\Controllers\Backend\Admin\ReportController::class, 'index'])->name('admin.reports.index');
-    
-});
+/*
+|--------------------------------------------------------------------------
+| ADMIN ROUTES
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'role:admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
 
-Route::middleware(['auth', 'role:company'])->group(function () {
-    // Route::get('/company/dashboard', [CompanyDashboardController::class, 'index'])->name('company.dashboard');
-       Route::get('/company/dashboard', [CompanyDashboardController::class, 'index'])
-        ->name('company.dashboard');
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])
+            ->name('dashboard');
 
-    // Attendance Management
-    Route::get('/company/attendances', [CompanyAttendanceController::class, 'index'])
-        ->name('company.attendances.index');
+        Route::resource('users', UserController::class);
+        Route::resource('companies', CompanyController::class);
+        Route::resource('attendances', AttendanceController::class);
+        Route::resource('permissions', PermissionController::class);
+        Route::resource('payrools', PayroolController::class);
+        Route::resource('loans', LoanController::class);
+        Route::resource('shifts', ShiftController::class);
+        Route::resource('schedules', ScheduleController::class);
+        Route::resource('prayers', PrayerController::class);
 
-    Route::get('/company/attendances/{id}', [CompanyAttendanceController::class, 'show'])
-        ->name('company.attendances.show');
+        Route::get('/reports', [ReportController::class, 'index'])
+            ->name('reports.index');
+    });
 
-         Route::resource('/company/employees', CompanyEmployeeController::class);
+/*
+|--------------------------------------------------------------------------
+| COMPANY ROUTES
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'role:company'])
+    ->prefix('company')
+    ->name('company.')
+    ->group(function () {
 
-         // Permission Approval
-    Route::get('/company/permissions', [CompanyPermissionController::class, 'index'])
-        ->name('company.permissions.index');
+        Route::get('/dashboard', [CompanyDashboardController::class, 'index'])
+            ->name('dashboard');
 
-    Route::post('/company/permissions/{id}/approve', [CompanyPermissionController::class, 'approve'])
-        ->name('company.permissions.approve');
+        // Attendance
+        Route::get('/attendances', [CompanyAttendanceController::class, 'index'])
+            ->name('attendances.index');
+        Route::get('/attendances/{id}', [CompanyAttendanceController::class, 'show'])
+            ->name('attendances.show');
 
-    Route::post('/company/permissions/{id}/reject', [CompanyPermissionController::class, 'reject'])
-        ->name('company.permissions.reject');
+        // Employees
+        Route::resource('employees', CompanyEmployeeController::class);
 
-         Route::resource('/company/shifts', CompanyShiftController::class)->names('company.shifts');
+        // Permissions
+        Route::get('/permissions', [CompanyPermissionController::class, 'index'])
+            ->name('permissions.index');
+        Route::post('/permissions/{id}/approve', [CompanyPermissionController::class, 'approve'])
+            ->name('permissions.approve');
+        Route::post('/permissions/{id}/reject', [CompanyPermissionController::class, 'reject'])
+            ->name('permissions.reject');
 
-          // Payroll Management
-    Route::resource('/company/payrolls', CompanyPayroolsController::class)->names('company.payrolls');
+        // Shifts
+        Route::resource('shifts', CompanyShiftController::class);
 
-    // Action: Approve / Pay
-    Route::post('/company/payrolls/{id}/status', [CompanyPayroolsController::class, 'changeStatus'])
-        ->name('company.payrolls.changeStatus');
+        // Payrolls
+        Route::resource('payrolls', CompanyPayroolsController::class);
+        Route::post('/payrolls/{id}/status', [CompanyPayroolsController::class, 'changeStatus'])
+            ->name('payrolls.changeStatus');
 
-        // loans
-    Route::resource('/company/loans', CompanyLoansController::class)->names('company.loans');
+        // Loans
+        Route::resource('loans', CompanyLoansController::class);
+        Route::post('/loans/{id}/status', [CompanyLoansController::class, 'changeStatus'])
+            ->name('loans.changeStatus');
+    });
 
+/*
+|--------------------------------------------------------------------------
+| USER ROUTES
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'role:user'])
+    ->prefix('user')
+    ->name('user.')
+    ->group(function () {
 
-    // Change status
-    Route::post('/company/loans/{id}/status', [CompanyLoansController::class, 'changeStatus'])
-        ->name('company.loans.changeStatus');
+        Route::get('/dashboard', [UserDashboardController::class, 'index'])
+            ->name('dashboard');
 
-});
+        // Attendance
+        Route::get('/attendances', [UserAttendanceController::class, 'index'])
+            ->name('attendances.index');
 
-Route::middleware(['auth', 'role:user'])->group(function () {
-    Route::get('/user/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
+        // Permissions
+        Route::resource('permissions', UserPermissionController::class);
 
-      // Attendance User
-    Route::get('/user/attendances', [UserAttendanceController::class, 'index'])
-        ->name('user.attendances.index');
+        // Schedules
+        Route::resource('schedules', UserScheduleController::class);
 
-        // permission User
-        Route::resource('/user/permissions', UserPermissionController::class)->names('user.permissions');
+        // Payrolls
+        Route::get('/payrolls', [UserPayrollController::class, 'index'])
+            ->name('payrolls.index');
+        Route::get('/payrolls/{id}', [UserPayrollController::class, 'show'])
+            ->name('payrolls.show');
 
-        // user schedules
-        Route::resource('/user/schedules', UserScheduleController::class)->names('user.schedules');
+        // Loans
+        Route::resource('loans', UserLoansController::class);
 
-        // user payrolls index
-        Route::get('/user/payrolls', [UserPayrollController::class, 'index'])->name('user.payrolls.index');
-        Route::get('/user/payrolls/{id}', [UserPayrollController::class, 'show'])->name('user.payrolls.show');
-
-        // user loans
-        Route::resource('/user/loans', UserLoansController::class)->names('user.loans');
-
-        // user notes
-        Route::resource('/user/notes', UserNotesController::class)->names('user.notes');
-
-
-});
+        // Notes
+        Route::resource('notes', UserNotesController::class);
+    });
