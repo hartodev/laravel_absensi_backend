@@ -37,16 +37,17 @@ class AuthController extends Controller
     //     return response(['user' => $user, 'token' => $token], 200);
     // }
 
-// revisi login kode 1 
- public function login(Request $request)
+    // kode revisi 2
+    public function login(Request $request)
     {
         $request->validate([
-            'email'    => 'required|email',
+            'email' => 'required|email',
             'password' => 'required'
         ]);
 
-        // Cari user berdasarkan email
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)
+            ->where('role', 'user')
+            ->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
@@ -54,24 +55,12 @@ class AuthController extends Controller
             ], 401);
         }
 
-        // Buat token sanctum
-        $tokenName = $user->role . '-token';
-        $token = $user->createToken($tokenName)->plainTextToken;
+        $token = $user->createToken('user_token')->plainTextToken;
 
-        // Ambil company jika ada
-        $company = null;
-        if ($user->company_id) {
-            $company = Company::find($user->company_id);
-        }
-
-        return response()->json([
-            'message' => 'Login berhasil',
-            'token'   => $token,
-            'role'    => $user->role,
-            'user'    => $user,
-            'company' => $company
-        ]);
+        return response(['user' => $user, 'token' => $token], 200);
     }
+
+
 
     //logout
     public function logout(Request $request)
@@ -139,7 +128,7 @@ class AuthController extends Controller
         ], 200);
     }
 
-     public function changePassword(Request $request)
+    public function changePassword(Request $request)
     {
         $request->validate([
             'old_password' => 'required',
