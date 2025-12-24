@@ -74,8 +74,8 @@ Route::prefix('user')
     ->group(function () {
 
         // // profile
-        // Route::get('/profile', [ProfileController::class, 'show']);
-        // Route::post('/profile', [ProfileController::class, 'update']);
+        Route::get('/profile', [AuthController::class, 'show']);
+        Route::post('/profile', [AuthController::class, 'update']);
 
         // // attendance
         Route::get('/attendances', [AttendanceController::class, 'index']);

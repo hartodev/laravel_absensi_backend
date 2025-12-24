@@ -151,4 +151,73 @@ class AuthController extends Controller
             'message' => 'Password berhasil diubah'
         ]);
     }
+
+     /**
+     * SHOW PROFILE
+     */
+    public function show(Request $request)
+    {
+        $user = $request->user();
+
+        return response()->json([
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'phone' => $user->phone,
+            'role' => $user->role,
+            'position' => $user->position,
+            'department' => $user->department,
+            'image_url' => $user->image_url,
+            'company_id' => $user->company_id,
+        ]);
+    }
+
+    /**
+     * UPDATE PROFILE
+     */
+    public function update(Request $request)
+    {
+        $user = $request->user();
+
+        $request->validate([
+            'name' => 'nullable|string|max:255',
+            'phone' => 'nullable|string|max:20',
+            'password' => 'nullable|string|min:6|confirmed',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'fcm_token' => 'nullable|string',
+        ]);
+
+        // Update basic data
+        if ($request->filled('name')) {
+            $user->name = $request->name;
+        }
+
+        if ($request->filled('phone')) {
+            $user->phone = $request->phone;
+        }
+
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+
+        if ($request->filled('fcm_token')) {
+            $user->fcm_token = $request->fcm_token;
+        }
+
+        // Upload image profile
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $filename = time() . '_' . $image->hashName();
+            $image->move(public_path('image/profile'), $filename);
+
+            $user->image_url = 'image/profile/' . $filename;
+        }
+
+        $user->save();
+
+        return response()->json([
+            'message' => 'Profile berhasil diperbarui',
+            'data' => $user
+        ]);
+    }
 }
