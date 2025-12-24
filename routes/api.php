@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\Company\CompanyAttendanceController;
 use App\Http\Controllers\Api\Company\CompanyPermissionController;
 use App\Http\Controllers\Api\Company\CompanyLoanController;
 use App\Http\Controllers\Api\Company\CompanyPayrollController;
+use App\Http\Controllers\Api\Company\CompanyShiftController;
 
 
 
@@ -140,7 +141,8 @@ Route::prefix('company')
         Route::post('/permissions/{id}/reject', [CompanyPermissionController::class, 'reject']);
 
         // // shifts
-        // Route::apiResource('/shifts', ShiftController::class);
+        Route::apiResource('/shifts', CompanyShiftController::class);
+        Route::patch('/shifts/{id}/default', [CompanyShiftController::class, 'setDefault']);
 
         // // payrolls
         Route::apiResource('/payrolls', CompanyPayrollController::class);
