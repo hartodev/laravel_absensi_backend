@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\NoteController;
+use App\Http\Controllers\Api\ScheduleController;
 
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -87,7 +88,7 @@ Route::prefix('user')
         Route::apiResource('/notes', NoteController::class);
 
         // // schedules
-        // Route::apiResource('/schedules', ScheduleController::class);
+        Route::apiResource('/schedules', ScheduleController::class);
 
         // // payrolls (read only)
         // Route::get('/payrolls', [PayrollController::class, 'index']);
