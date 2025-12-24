@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\NoteController;
 use App\Http\Controllers\Api\ScheduleController;
+use App\Http\Controllers\Api\LoanController;
 
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -95,9 +96,9 @@ Route::prefix('user')
         // Route::get('/payrolls/{id}', [PayrollController::class, 'show']);
 
         // // loans (kasbon)
-        // Route::get('/loans', [LoanController::class, 'index']);
-        // Route::post('/loans', [LoanController::class, 'store']);
-        // Route::get('/loans/{id}', [LoanController::class, 'show']);
+        Route::get('/loans', [LoanController::class, 'index']);
+        Route::post('/loans', [LoanController::class, 'store']);
+        Route::get('/loans/{id}', [LoanController::class, 'show']);
     });
 
 
