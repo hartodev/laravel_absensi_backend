@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\NoteController;
 use App\Http\Controllers\Api\ScheduleController;
 use App\Http\Controllers\Api\LoanController;
 use App\Http\Controllers\Api\PayrollController;
+use App\Http\Controllers\Api\Company\CompanyProfileController;
 
 
 
@@ -116,8 +117,8 @@ Route::prefix('company')
         // Route::get('/dashboard', [DashboardController::class, 'index']);
 
         // // company profile
-        // Route::get('/profile', [CompanyProfileController::class, 'show']);
-        // Route::post('/profile', [CompanyProfileController::class, 'update']);
+        Route::get('/profile', [CompanyProfileController::class, 'show']);
+        Route::post('/profile', [CompanyProfileController::class, 'update']);
 
         // // employees
         // Route::apiResource('/employees', EmployeeController::class);
