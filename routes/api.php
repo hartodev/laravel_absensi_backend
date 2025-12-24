@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\LoanController;
 use App\Http\Controllers\Api\PayrollController;
 use App\Http\Controllers\Api\Company\CompanyProfileController;
 use App\Http\Controllers\Api\Company\DashboardController;
+use App\Http\Controllers\Backend\Company\CompanyEmployeeController;
 
 
 
@@ -122,7 +123,7 @@ Route::prefix('company')
         Route::post('/profile', [CompanyProfileController::class, 'update']);
 
         // // employees
-        // Route::apiResource('/employees', EmployeeController::class);
+        Route::apiResource('/employees', CompanyEmployeeController::class);
 
         // // attendances
         // Route::get('/attendances', [CompanyAttendanceController::class, 'index']);
