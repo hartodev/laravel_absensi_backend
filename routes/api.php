@@ -8,6 +8,9 @@ use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\NoteController;
 use App\Http\Controllers\Api\ScheduleController;
 use App\Http\Controllers\Api\LoanController;
+use App\Http\Controllers\Api\PayrollController;
+
+
 
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -92,8 +95,8 @@ Route::prefix('user')
         Route::apiResource('/schedules', ScheduleController::class);
 
         // // payrolls (read only)
-        // Route::get('/payrolls', [PayrollController::class, 'index']);
-        // Route::get('/payrolls/{id}', [PayrollController::class, 'show']);
+        Route::get('/payrolls', [PayrollController::class, 'index']);
+        Route::get('/payrolls/{id}', [PayrollController::class, 'show']);
 
         // // loans (kasbon)
         Route::get('/loans', [LoanController::class, 'index']);
