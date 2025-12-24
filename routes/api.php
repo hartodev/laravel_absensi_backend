@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AttendanceController;
+use App\Http\Controllers\Api\PermissionController;
 
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -77,9 +78,9 @@ Route::prefix('user')
         Route::get('/attendances/is-checkin', [AttendanceController::class, 'isCheckedIn']);
 
         // // permissions (izin / cuti)
-        // Route::get('/permissions', [PermissionController::class, 'index']);
-        // Route::post('/permissions', [PermissionController::class, 'store']);
-        // Route::get('/permissions/{id}', [PermissionController::class, 'show']);
+        Route::get('/permissions', [PermissionController::class, 'index']);
+        Route::post('/permissions', [PermissionController::class, 'store']);
+        Route::get('/permissions/{id}', [PermissionController::class, 'show']);
 
         // // notes
         // Route::apiResource('/notes', NoteController::class);
