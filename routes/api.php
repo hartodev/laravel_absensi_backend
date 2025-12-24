@@ -15,6 +15,7 @@ use App\Http\Controllers\Backend\Company\CompanyEmployeeController;
 use App\Http\Controllers\Api\Company\CompanyAttendanceController;
 use App\Http\Controllers\Api\Company\CompanyPermissionController;
 use App\Http\Controllers\Api\Company\CompanyLoanController;
+use App\Http\Controllers\Api\Company\CompanyPayrollController;
 
 
 
@@ -142,8 +143,8 @@ Route::prefix('company')
         // Route::apiResource('/shifts', ShiftController::class);
 
         // // payrolls
-        // Route::apiResource('/payrolls', CompanyPayrollController::class);
-        // Route::post('/payrolls/{id}/status', [CompanyPayrollController::class, 'changeStatus']);
+        Route::apiResource('/payrolls', CompanyPayrollController::class);
+        Route::post('/payrolls/{id}/status', [CompanyPayrollController::class, 'changeStatus']);
 
         // // loans
         Route::apiResource('/loans', CompanyLoanController::class);
