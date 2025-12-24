@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\ScheduleController;
 use App\Http\Controllers\Api\LoanController;
 use App\Http\Controllers\Api\PayrollController;
 use App\Http\Controllers\Api\Company\CompanyProfileController;
+use App\Http\Controllers\Api\Company\DashboardController;
 
 
 
@@ -114,7 +115,7 @@ Route::prefix('company')
     ->group(function () {
 
         // // dashboard
-        // Route::get('/dashboard', [DashboardController::class, 'index']);
+        Route::get('/dashboard', [DashboardController::class, 'index']);
 
         // // company profile
         Route::get('/profile', [CompanyProfileController::class, 'show']);
