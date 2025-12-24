@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AttendanceController;
 
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -70,10 +71,10 @@ Route::prefix('user')
         // Route::post('/profile', [ProfileController::class, 'update']);
 
         // // attendance
-        // Route::get('/attendances', [AttendanceController::class, 'index']);
-        // Route::post('/attendances/check-in', [AttendanceController::class, 'checkIn']);
-        // Route::post('/attendances/check-out', [AttendanceController::class, 'checkOut']);
-        // Route::get('/attendances/is-checkin', [AttendanceController::class, 'isCheckedIn']);
+        Route::get('/attendances', [AttendanceController::class, 'index']);
+        Route::post('/attendances/check-in', [AttendanceController::class, 'checkIn']);
+        Route::post('/attendances/check-out', [AttendanceController::class, 'checkOut']);
+        Route::get('/attendances/is-checkin', [AttendanceController::class, 'isCheckedIn']);
 
         // // permissions (izin / cuti)
         // Route::get('/permissions', [PermissionController::class, 'index']);
