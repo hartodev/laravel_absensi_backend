@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\Company\CompanyProfileController;
 use App\Http\Controllers\Api\Company\DashboardController;
 use App\Http\Controllers\Backend\Company\CompanyEmployeeController;
 use App\Http\Controllers\Api\Company\CompanyAttendanceController;
+use App\Http\Controllers\Api\Company\CompanyPermissionController;
 
 
 
@@ -132,9 +133,9 @@ Route::prefix('company')
         Route::patch('/attendances/{id}/overtime', [CompanyAttendanceController::class, 'approveOvertime']);
 
         // // permissions approval
-        // Route::get('/permissions', [CompanyPermissionController::class, 'index']);
-        // Route::post('/permissions/{id}/approve', [CompanyPermissionController::class, 'approve']);
-        // Route::post('/permissions/{id}/reject', [CompanyPermissionController::class, 'reject']);
+        Route::get('/permissions', [CompanyPermissionController::class, 'index']);
+        Route::post('/permissions/{id}/approve', [CompanyPermissionController::class, 'approve']);
+        Route::post('/permissions/{id}/reject', [CompanyPermissionController::class, 'reject']);
 
         // // shifts
         // Route::apiResource('/shifts', ShiftController::class);
