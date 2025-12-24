@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\PayrollController;
 use App\Http\Controllers\Api\Company\CompanyProfileController;
 use App\Http\Controllers\Api\Company\DashboardController;
 use App\Http\Controllers\Backend\Company\CompanyEmployeeController;
+use App\Http\Controllers\Api\Company\CompanyAttendanceController;
 
 
 
@@ -126,8 +127,9 @@ Route::prefix('company')
         Route::apiResource('/employees', CompanyEmployeeController::class);
 
         // // attendances
-        // Route::get('/attendances', [CompanyAttendanceController::class, 'index']);
-        // Route::get('/attendances/{id}', [CompanyAttendanceController::class, 'show']);
+        Route::get('/attendances', [CompanyAttendanceController::class, 'index']);
+        Route::get('/attendances/{id}', [CompanyAttendanceController::class, 'show']);
+        Route::patch('/attendances/{id}/overtime', [CompanyAttendanceController::class, 'approveOvertime']);
 
         // // permissions approval
         // Route::get('/permissions', [CompanyPermissionController::class, 'index']);
