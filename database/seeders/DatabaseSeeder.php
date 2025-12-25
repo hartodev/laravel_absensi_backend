@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Rudi Admin',
             'email' => 'rudi@absensi.com',
             'password' => Hash::make('12345678'),
+            'role' => 'company',
         ]);
 
         \App\Models\Company::create([

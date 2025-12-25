@@ -30,7 +30,7 @@
             <h2 class="section-title">Employees</h2>
 
          <div class="card">
-        <form method="POST" action="{{ route('employees.update', $employee->id) }}">
+        <form method="POST" action="{{ route('company.employees.update', $employee->id) }}">
             @csrf
             @method('PUT')
 
