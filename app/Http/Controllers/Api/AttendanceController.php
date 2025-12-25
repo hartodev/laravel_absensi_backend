@@ -82,7 +82,7 @@ class AttendanceController extends Controller
 
 
     // versi 2
-     /**
+    /**
      * LIST RIWAYAT ABSENSI USER
      */
     public function index(Request $request)
