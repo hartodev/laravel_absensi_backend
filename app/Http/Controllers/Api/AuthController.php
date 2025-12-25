@@ -40,20 +40,31 @@ class AuthController extends Controller
     // kode revisi 2
     public function login(Request $request)
     {
+
         $request->validate([
-            'email' => 'required|email',
+            'email'    => 'required|email',
             'password' => 'required'
         ]);
 
-        $user = User::where('email', $request->email)
-            ->where('role', 'user')
-            ->first();
+        // Cari user berdasarkan email
+        $user = User::where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
                 'message' => 'Email atau password salah'
             ], 401);
         }
+
+        // Buat token sanctum
+        $tokenName = $user->role . '-token';
+        $token = $user->createToken($tokenName)->plainTextToken;
+
+        // Ambil company jika ada
+        $company = null;
+        if ($user->company_id) {
+            $company = Company::find($user->company_id);
+        }
+
 
         $token = $user->createToken('user_token')->plainTextToken;
 
@@ -152,7 +163,7 @@ class AuthController extends Controller
         ]);
     }
 
-     /**
+    /**
      * SHOW PROFILE
      */
     public function show(Request $request)
