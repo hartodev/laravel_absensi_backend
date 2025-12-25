@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class NoteController extends Controller
 {
-      /**
+    /**
      * LIST CATATAN USER
      */
     public function index(Request $request)
