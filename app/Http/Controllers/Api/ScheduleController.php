@@ -8,7 +8,7 @@ use App\Models\Schedule;
 
 class ScheduleController extends Controller
 {
-     /**
+    /**
      * LIST JADWAL USER
      */
     public function index(Request $request)

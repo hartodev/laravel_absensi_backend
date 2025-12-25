@@ -102,6 +102,8 @@ Route::prefix('user')
 
         // // schedules
         Route::apiResource('/schedules', ScheduleController::class);
+        // update status
+        Route::post('/schedules/{id}/status', [ScheduleController::class, 'updateStatus']);
 
         // // payrolls (read only)
         Route::get('/payrolls', [PayrollController::class, 'index']);
