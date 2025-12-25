@@ -36,7 +36,7 @@ class PermissionController extends Controller
 
 
     // versi 2
-        public function index(Request $request)
+    public function index(Request $request)
     {
         $permissions = Permission::where('user_id', $request->user()->id)
             ->orderBy('date_permission', 'desc')
@@ -48,48 +48,48 @@ class PermissionController extends Controller
     /**
      * AJUKAN IZIN / CUTI
      */
-public function store(Request $request)
-{
-    $request->validate([
-        'date_permission' => 'required|date',
-        'reason' => 'required|string',
-        'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-    ]);
+    public function store(Request $request)
+    {
+        $request->validate([
+            'date_permission' => 'required|date',
+            'reason' => 'required|string',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
 
-    // Cegah izin ganda di tanggal sama
-    $exists = Permission::where('user_id', $request->user()->id)
-        ->where('date_permission', $request->date_permission)
-        ->first();
+        // Cegah izin ganda di tanggal sama
+        $exists = Permission::where('user_id', $request->user()->id)
+            ->where('date_permission', $request->date_permission)
+            ->first();
 
-    if ($exists) {
+        if ($exists) {
+            return response()->json([
+                'message' => 'Izin pada tanggal tersebut sudah diajukan'
+            ], 400);
+        }
+
+        $permission = new Permission();
+        $permission->user_id = $request->user()->id;
+        $permission->date_permission = $request->date_permission;
+        $permission->reason = $request->reason;
+        $permission->is_approved = false;
+
+        // Upload image ke public/image/permission
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+
+            $filename = time() . '_' . $image->hashName();
+            $image->move(public_path('image/permission'), $filename);
+
+            $permission->image = 'image/permission/' . $filename;
+        }
+
+        $permission->save();
+
         return response()->json([
-            'message' => 'Izin pada tanggal tersebut sudah diajukan'
-        ], 400);
+            'message' => 'Pengajuan izin berhasil',
+            'data' => $permission
+        ], 201);
     }
-
-    $permission = new Permission();
-    $permission->user_id = $request->user()->id;
-    $permission->date_permission = $request->date_permission;
-    $permission->reason = $request->reason;
-    $permission->is_approved = false;
-
-    // Upload image ke public/image/permission
-    if ($request->hasFile('image')) {
-        $image = $request->file('image');
-
-        $filename = time() . '_' . $image->hashName();
-        $image->move(public_path('image/permission'), $filename);
-
-        $permission->image = 'image/permission/' . $filename;
-    }
-
-    $permission->save();
-
-    return response()->json([
-        'message' => 'Pengajuan izin berhasil',
-        'data' => $permission
-    ], 201);
-}
 
 
     /**
