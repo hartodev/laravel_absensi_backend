@@ -41,14 +41,23 @@ class User extends Authenticatable
 
 
     public function attendances()
-{
-    return $this->hasMany(Attendance::class);
-}
+    {
+        return $this->hasMany(Attendance::class);
+    }
 
 
-public function company()
-{
-    return $this->belongsTo(Company::class);
-}
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
 
+    public function getAppTypeAttribute()
+    {
+        return $this->company?->type;
+    }
+
+    public function getDashboardKeyAttribute()
+    {
+        return $this->company?->type . '.' . $this->role;
+    }
 }

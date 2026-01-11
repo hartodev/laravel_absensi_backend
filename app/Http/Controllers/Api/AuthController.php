@@ -72,41 +72,74 @@ class AuthController extends Controller
     // }
 
     // kode 3 revisi khusus user nanti role company beda lagi
+    // public function login(Request $request)
+    // {
+    //     $request->validate([
+    //         'email'    => 'required|email',
+    //         'password' => 'required'
+    //     ]);
+
+    //     // Cari user
+    //     $user = User::where('email', $request->email)->first();
+
+    //     if (!$user || !Hash::check($request->password, $user->password)) {
+    //         return response()->json([
+    //             'message' => 'Email atau password salah'
+    //         ], 401);
+    //     }
+
+    //     // 🔒 KUNCI ROLE: HANYA USER
+    //     if ($user->role !== 'user') {
+    //         return response()->json([
+    //             'message' => 'Akun ini tidak bisa login di aplikasi User'
+    //         ], 403);
+    //     }
+
+    //     // Hapus token lama (opsional tapi disarankan)
+    //     $user->tokens()->delete();
+
+    //     // Buat token
+    //     $token = $user->createToken('user_token')->plainTextToken;
+
+    //     return response()->json([
+    //         'user'  => $user,
+    //         'token' => $token
+    //     ], 200);
+    // }
+
+
+    // kode 4 revisi versi semua role bisa login
     public function login(Request $request)
     {
         $request->validate([
-            'email'    => 'required|email',
+            'email' => 'required|email',
             'password' => 'required'
         ]);
 
-        // Cari user
-        $user = User::where('email', $request->email)->first();
+        $user = User::with('company')->where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json([
-                'message' => 'Email atau password salah'
-            ], 401);
+            return response()->json(['message' => 'Login gagal'], 401);
         }
 
-        // 🔒 KUNCI ROLE: HANYA USER
-        if ($user->role !== 'user') {
-            return response()->json([
-                'message' => 'Akun ini tidak bisa login di aplikasi User'
-            ], 403);
-        }
-
-        // Hapus token lama (opsional tapi disarankan)
         $user->tokens()->delete();
-
-        // Buat token
-        $token = $user->createToken('user_token')->plainTextToken;
+        $token = $user->createToken('auth')->plainTextToken;
 
         return response()->json([
-            'user'  => $user,
-            'token' => $token
-        ], 200);
+            'token' => $token,
+            'user' => $user,
+            'context' => [
+                'app_type' => $user->app_type,
+                'role' => $user->role,
+                'dashboard' => $user->dashboard_key
+            ]
+        ]);
     }
 
+    private function resolveDashboard($user)
+    {
+        return $user->company->type . '.' . $user->role;
+    }
 
 
     //logout
