@@ -122,7 +122,7 @@ Route::prefix('user')
 Route::prefix('company')
     ->middleware(['auth:sanctum', 'role:company'])
     ->group(function () {
-
+ 
         // // dashboard
         Route::get('/dashboard', [DashboardController::class, 'index']);
 
