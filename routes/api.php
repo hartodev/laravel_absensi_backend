@@ -11,12 +11,12 @@ use App\Http\Controllers\Api\LoanController;
 use App\Http\Controllers\Api\PayrollController;
 use App\Http\Controllers\Api\Company\CompanyProfileController;
 use App\Http\Controllers\Api\Company\DashboardController;
-use App\Http\Controllers\Backend\Company\CompanyEmployeeController;
+use App\Http\Controllers\Api\Company\CompanyEmployeeController;
 use App\Http\Controllers\Api\Company\CompanyAttendanceController;
 use App\Http\Controllers\Api\Company\CompanyPermissionController;
 use App\Http\Controllers\Api\Company\CompanyLoanController;
 use App\Http\Controllers\Api\Company\CompanyPayrollController;
-use App\Http\Controllers\Api\Company\CompanyShiftController;
+use App\Http\Controllers\Api\Company\CompanyShiftController; 
 use App\Http\Controllers\Api\Company\CompanyReportController;
 
 
@@ -132,6 +132,8 @@ Route::prefix('company')
 
         // // employees
         Route::apiResource('/employees', CompanyEmployeeController::class);
+        // status
+        Route::post('/employees/{id}/status', [CompanyEmployeeController::class, 'updateStatus']);
 
         // // attendances
         Route::get('/attendances', [CompanyAttendanceController::class, 'index']);
