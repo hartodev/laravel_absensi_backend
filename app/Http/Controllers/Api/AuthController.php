@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Company;
 
@@ -12,107 +13,112 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    // login
-    // public function login(Request $request)
-    // {
-    //     $loginData = $request->validate([
-    //         'email' => 'required|email',
-    //         'password' => 'required',
-    //     ]);
-
-    //     $user = User::where('email', $loginData['email'])->first();
-
-    //     //check user exist
-    //     if (!$user) {
-    //         return response(['message' => 'Invalid credentials'], 401);
-    //     }
-
-    //     //check password
-    //     if (!Hash::check($loginData['password'], $user->password)) {
-    //         return response(['message' => 'Invalid credentials'], 401);
-    //     }
-
-    //     $token = $user->createToken('auth_token')->plainTextToken;
-
-    //     return response(['user' => $user, 'token' => $token], 200);
-    // }
-
-    // kode revisi 2
-    // public function login(Request $request)
-    // {
-
-    //     $request->validate([
-    //         'email'    => 'required|email',
-    //         'password' => 'required'
-    //     ]);
-
-    //     // Cari user berdasarkan email
-    //     $user = User::where('email', $request->email)->first();
-
-    //     if (!$user || !Hash::check($request->password, $user->password)) {
-    //         return response()->json([
-    //             'message' => 'Email atau password salah'
-    //         ], 401);
-    //     }
-
-    //     // Buat token sanctum
-    //     $tokenName = $user->role . '-token';
-    //     $token = $user->createToken($tokenName)->plainTextToken;
-
-    //     // Ambil company jika ada
-    //     $company = null;
-    //     if ($user->company_id) {
-    //         $company = Company::find($user->company_id);
-    //     }
-
-
-    //     $token = $user->createToken('user_token')->plainTextToken;
-
-    //     return response(['user' => $user, 'token' => $token], 200);
-    // }
-
-    // kode 3 revisi khusus user nanti role company beda lagi
-    // public function login(Request $request)
-    // {
-    //     $request->validate([
-    //         'email'    => 'required|email',
-    //         'password' => 'required'
-    //     ]);
-
-    //     // Cari user
-    //     $user = User::where('email', $request->email)->first();
-
-    //     if (!$user || !Hash::check($request->password, $user->password)) {
-    //         return response()->json([
-    //             'message' => 'Email atau password salah'
-    //         ], 401);
-    //     }
-
-    //     // 🔒 KUNCI ROLE: HANYA USER
-    //     if ($user->role !== 'user') {
-    //         return response()->json([
-    //             'message' => 'Akun ini tidak bisa login di aplikasi User'
-    //         ], 403);
-    //     }
-
-    //     // Hapus token lama (opsional tapi disarankan)
-    //     $user->tokens()->delete();
-
-    //     // Buat token
-    //     $token = $user->createToken('user_token')->plainTextToken;
-
-    //     return response()->json([
-    //         'user'  => $user,
-    //         'token' => $token
-    //     ], 200);
-    // }
-
 
     // kode 4 revisi versi semua role bisa login
+    // public function login(Request $request)
+    // {
+    //     $request->validate([
+    //         'email' => 'required|email',
+    //         'password' => 'required'
+    //     ]);
+
+    //     $user = User::with('company')->where('email', $request->email)->first();
+
+    //     if (!$user || !Hash::check($request->password, $user->password)) {
+    //         return response()->json(['message' => 'Login gagal'], 401);
+    //     }
+
+    //     $user->tokens()->delete();
+    //     $token = $user->createToken('auth')->plainTextToken;
+
+    //     return response()->json([
+    //         'token' => $token,
+    //         'user' => $user,
+    //         'context' => [
+    //             'app_type' => $user->app_type,
+    //             'role' => $user->role,
+    //             'dashboard' => $user->dashboard_key
+    //         ]
+    //     ]);
+    // }
+
+    // kode 5 semua role bisa login
+    // public function login(Request $request)
+    // {
+    //     $request->validate([
+    //         'email' => 'required|email',
+    //         'password' => 'required'
+    //     ]);
+
+    //     $user = User::with('company')->where('email', $request->email)->first();
+
+    //     if (!$user || !Hash::check($request->password, $user->password)) {
+    //         return response()->json(['message' => 'Login gagal'], 401);
+    //     }
+
+    //     $user->tokens()->delete();
+    //     $token = $user->createToken('auth')->plainTextToken;
+
+    //     // Tentukan type
+    //     $type = $user->company ? $user->company->type : 'system';
+
+    //     // Tentukan app role
+    //     if ($user->role === 'company') {
+    //         // admin organisasi
+    //         switch ($type) {
+    //             case 'company':
+    //                 $appRole = 'hr';
+    //                 break;
+    //             case 'pesantren':
+    //                 $appRole = 'ustadz';
+    //                 break;
+    //             case 'school':
+    //                 $appRole = 'teacher';
+    //                 break;
+    //             case 'hospital':
+    //                 $appRole = 'hr';
+    //                 break;
+    //             default:
+    //                 $appRole = 'admin';
+    //         }
+    //     } else {
+    //         // staff / murid / santri
+    //         switch ($type) {
+    //             case 'company':
+    //                 $appRole = 'employee';
+    //                 break;
+    //             case 'pesantren':
+    //                 $appRole = 'santri';
+    //                 break;
+    //             case 'school':
+    //                 $appRole = 'student';
+    //                 break;
+    //             case 'hospital':
+    //                 $appRole = 'doctor'; // atau nurse → bisa dari position
+    //                 break;
+    //             default:
+    //                 $appRole = 'user';
+    //         }
+    //     }
+
+    //     $dashboardKey = $type . '.' . $appRole;
+
+    //     return response()->json([
+    //         'token' => $token,
+    //         'user' => $user,
+    //         'context' => [
+    //             'app_type' => $type,
+    //             'role' => $appRole,
+    //             'dashboard' => $dashboardKey
+    //         ]
+    //     ]);
+    // }
+
+    // kode 6 revisi login semua role
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
+            'email'    => 'required|email',
             'password' => 'required'
         ]);
 
@@ -122,24 +128,129 @@ class AuthController extends Controller
             return response()->json(['message' => 'Login gagal'], 401);
         }
 
+        if (!$user->company) {
+            return response()->json(['message' => 'User tidak terhubung ke organisasi'], 403);
+        }
+
+        // hapus token lama
         $user->tokens()->delete();
         $token = $user->createToken('auth')->plainTextToken;
 
+        $type = $user->company->type;   // company, pesantren, hospital, school
+        $role = $user->role;            // hr, employee, ustadz, santri, teacher, dll
+
+        $dashboardKey = $type . '.' . $role;
+
         return response()->json([
             'token' => $token,
-            'user' => $user,
+            'user' => [
+                'id'         => $user->id,
+                'name'       => $user->name,
+                'email'      => $user->email,
+                'role'       => $role,
+                'company_id' => $user->company_id
+            ],
+            'company' => [
+                'id'   => $user->company->id,
+                'name' => $user->company->name,
+                'type' => $type
+            ],
             'context' => [
-                'app_type' => $user->app_type,
-                'role' => $user->role,
-                'dashboard' => $user->dashboard_key
+                'app_type'  => $type,
+                'role'      => $role,
+                'dashboard' => $dashboardKey
             ]
         ]);
     }
+
+
+
 
     private function resolveDashboard($user)
     {
         return $user->company->type . '.' . $user->role;
     }
+
+    // register organization
+    public function registerOrganization(Request $request)
+    {
+        $request->validate([
+            // company
+            'org_name'   => 'required',
+            'org_email'  => 'required|email|unique:companies,email',
+            'address'    => 'required',
+            'latitude'   => 'required',
+            'longitude'  => 'required',
+            'radius_km'  => 'required',
+            'time_in'    => 'required',
+            'time_out'   => 'required',
+            'type'       => 'required|in:company,pesantren,school,hospital',
+
+            // admin
+            'admin_name'  => 'required',
+            'admin_email' => 'required|email|unique:users,email',
+            'password'    => 'required|min:6'
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            // 1. Buat company
+            $company = Company::create([
+                'name'      => $request->org_name,
+                'email'     => $request->org_email,
+                'address'   => $request->address,
+                'latitude'  => $request->latitude,
+                'longitude' => $request->longitude,
+                'radius_km' => $request->radius_km,
+                'time_in'   => $request->time_in,
+                'time_out'  => $request->time_out,
+                'type'      => $request->type,
+                'timezone'  => 'Asia/Jakarta'
+            ]);
+
+            // 2. Tentukan role admin berdasarkan type organisasi
+            $adminRoleMap = [
+                'company'   => 'hr',
+                'pesantren' => 'ustadz',
+                'school'    => 'teacher',
+                'hospital'  => 'hr'
+            ];
+
+            $adminRole = $adminRoleMap[$request->type];
+
+            // 3. Buat user admin
+            $admin = User::create([
+                'name'       => $request->admin_name,
+                'email'      => $request->admin_email,
+                'password'   => Hash::make($request->password),
+                'role'       => $adminRole,         // 🔥 BUKAN company
+                'company_id' => $company->id
+            ]);
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Organisasi berhasil didaftarkan',
+                'company' => $company,
+                'admin'   => [
+                    'id'    => $admin->id,
+                    'name'  => $admin->name,
+                    'email' => $admin->email,
+                    'role'  => $admin->role
+                ],
+                'dashboard_key' => $company->type . '.' . $admin->role
+            ], 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Gagal mendaftarkan organisasi',
+                'error'   => $e->getMessage()
+            ], 500);
+        }
+    }
+
+
 
 
     //logout
