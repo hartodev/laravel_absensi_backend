@@ -184,7 +184,10 @@ class AuthController extends Controller
             'radius_km'  => 'required',
             'time_in'    => 'required',
             'time_out'   => 'required',
-            'type'       => 'required|in:company,pesantren,school,hospital',
+            // 'type'       => 'required|in:company,pesantren,school,hospital',
+            // 'type' => 'required|in:company,pesantren,school,hospital,government,factory,retail,restaurant,training,organization,transport,remote,sports',
+            'type' => 'required|in:company,pesantren,',
+
 
             // admin
             'admin_name'  => 'required',
@@ -213,8 +216,8 @@ class AuthController extends Controller
             $adminRoleMap = [
                 'company'   => 'hr',
                 'pesantren' => 'ustadz',
-                'school'    => 'teacher',
-                'hospital'  => 'hr'
+                // 'school'    => 'teacher',
+                // 'hospital'  => 'hr'
             ];
 
             $adminRole = $adminRoleMap[$request->type];
