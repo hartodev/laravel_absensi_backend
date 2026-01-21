@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Company;
+use Illuminate\Support\Facades\File;
 
 use Illuminate\Support\Facades\Hash;
 
@@ -14,107 +15,7 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
 
-    // kode 4 revisi versi semua role bisa login
-    // public function login(Request $request)
-    // {
-    //     $request->validate([
-    //         'email' => 'required|email',
-    //         'password' => 'required'
-    //     ]);
 
-    //     $user = User::with('company')->where('email', $request->email)->first();
-
-    //     if (!$user || !Hash::check($request->password, $user->password)) {
-    //         return response()->json(['message' => 'Login gagal'], 401);
-    //     }
-
-    //     $user->tokens()->delete();
-    //     $token = $user->createToken('auth')->plainTextToken;
-
-    //     return response()->json([
-    //         'token' => $token,
-    //         'user' => $user,
-    //         'context' => [
-    //             'app_type' => $user->app_type,
-    //             'role' => $user->role,
-    //             'dashboard' => $user->dashboard_key
-    //         ]
-    //     ]);
-    // }
-
-    // kode 5 semua role bisa login
-    // public function login(Request $request)
-    // {
-    //     $request->validate([
-    //         'email' => 'required|email',
-    //         'password' => 'required'
-    //     ]);
-
-    //     $user = User::with('company')->where('email', $request->email)->first();
-
-    //     if (!$user || !Hash::check($request->password, $user->password)) {
-    //         return response()->json(['message' => 'Login gagal'], 401);
-    //     }
-
-    //     $user->tokens()->delete();
-    //     $token = $user->createToken('auth')->plainTextToken;
-
-    //     // Tentukan type
-    //     $type = $user->company ? $user->company->type : 'system';
-
-    //     // Tentukan app role
-    //     if ($user->role === 'company') {
-    //         // admin organisasi
-    //         switch ($type) {
-    //             case 'company':
-    //                 $appRole = 'hr';
-    //                 break;
-    //             case 'pesantren':
-    //                 $appRole = 'ustadz';
-    //                 break;
-    //             case 'school':
-    //                 $appRole = 'teacher';
-    //                 break;
-    //             case 'hospital':
-    //                 $appRole = 'hr';
-    //                 break;
-    //             default:
-    //                 $appRole = 'admin';
-    //         }
-    //     } else {
-    //         // staff / murid / santri
-    //         switch ($type) {
-    //             case 'company':
-    //                 $appRole = 'employee';
-    //                 break;
-    //             case 'pesantren':
-    //                 $appRole = 'santri';
-    //                 break;
-    //             case 'school':
-    //                 $appRole = 'student';
-    //                 break;
-    //             case 'hospital':
-    //                 $appRole = 'doctor'; // atau nurse → bisa dari position
-    //                 break;
-    //             default:
-    //                 $appRole = 'user';
-    //         }
-    //     }
-
-    //     $dashboardKey = $type . '.' . $appRole;
-
-    //     return response()->json([
-    //         'token' => $token,
-    //         'user' => $user,
-    //         'context' => [
-    //             'app_type' => $type,
-    //             'role' => $appRole,
-    //             'dashboard' => $dashboardKey
-    //         ]
-    //     ]);
-    // }
-
-    // kode 6 revisi login semua role
     public function login(Request $request)
     {
         $request->validate([
@@ -350,11 +251,14 @@ class AuthController extends Controller
      */
     public function show(Request $request)
     {
-        $user = $request->user();
 
-        return response()->json(
-            $user
-        );
+        $user = $request->user()->load('company');
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Success',
+            'data' => $user
+        ]);
     }
 
     /**
@@ -365,32 +269,33 @@ class AuthController extends Controller
         $user = $request->user();
 
         $request->validate([
-            'name' => 'nullable|string|max:255',
+            'name'  => 'nullable|string|max:255',
             'phone' => 'nullable|string|max:20',
-            'password' => 'nullable|string|min:6|confirmed',
+            'email' => 'nullable|email|unique:users,email,' . $user->id,
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'fcm_token' => 'nullable|string',
         ]);
 
-        // Update basic data
+        // update field satu-satu
         if ($request->filled('name')) {
             $user->name = $request->name;
+        }
+
+        if ($request->filled('email')) {
+            $user->email = $request->email;
         }
 
         if ($request->filled('phone')) {
             $user->phone = $request->phone;
         }
 
-        if ($request->filled('password')) {
-            $user->password = Hash::make($request->password);
-        }
-
-        if ($request->filled('fcm_token')) {
-            $user->fcm_token = $request->fcm_token;
-        }
-
-        // Upload image profile
+        // upload image ke public/image/profile
         if ($request->hasFile('image')) {
+
+            // hapus image lama jika ada
+            if ($user->image_url && File::exists(public_path($user->image_url))) {
+                File::delete(public_path($user->image_url));
+            }
+
             $image = $request->file('image');
             $filename = time() . '_' . $image->hashName();
             $image->move(public_path('image/profile'), $filename);
@@ -400,9 +305,12 @@ class AuthController extends Controller
 
         $user->save();
 
+        $user->load('company');
+
         return response()->json([
+            'status'  => true,
             'message' => 'Profile berhasil diperbarui',
-            'data' => $user
-        ]);
+            'data'    => $user,
+        ], 200);
     }
 }

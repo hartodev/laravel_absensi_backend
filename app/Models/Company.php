@@ -11,10 +11,24 @@ class Company extends Model
     protected $guarded = [];
 
     public const TYPES = [
-    'company', 'school', 'pesantren', 'hospital', 'government',
-    'factory', 'retail', 'restaurant', 'training',
-    'organization', 'transport', 'remote', 'sports'
-];
+        'company',
+        'school',
+        'pesantren',
+        'hospital',
+        'government',
+        'factory',
+        'retail',
+        'restaurant',
+        'training',
+        'organization',
+        'transport',
+        'remote',
+        'sports'
+    ];
 
 
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }
